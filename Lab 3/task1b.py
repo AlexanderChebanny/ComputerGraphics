@@ -11,6 +11,8 @@ def compare_color(cl, b, g, r):
 
 def drawarea(img, bck, x, y):
     yb, xb, _ = bck.shape
+    yb1, xb1, _ = img.shape
+    print(yb1, xb1)
     xc = xb // 2
     yc = yb // 2
     ycc = y
@@ -19,30 +21,30 @@ def drawarea(img, bck, x, y):
     q.put((x, y, xc, yc))
     while not q.empty():
         x1, y1, xc, yc = q.get()
-        if not compare_color(img[y1][x1], b, g, r):
+        if not (y1 >= 0 and y1 < yb1 and x1 >= 0 and x1 < xb1) or not compare_color(img[y1][x1], b, g, r):
             continue
         x2 = x1
         xc1 = xc
         top = deque()
         bot = deque()
-        while compare_color(img[y1][x1], b, g, r):
+        while y1 >= 0 and y1 < yb1 and x1 >= 0 and x1 < xb1 and compare_color(img[y1][x1], b, g, r):
             #print(type(img[y1][x1]))
-            print(bck[yc % yb][xc % xb])
+            #print(bck[yc % yb][xc % xb])
             img[y1][x1] = bck[yc % yb][xc % xb]
-            if compare_color(img[y1 + 1][x1], b, g, r):
+            if y1 < yb1 - 1 and compare_color(img[y1 + 1][x1], b, g, r):
                 top.appendleft((x1, y1 + 1, xc, yc + 1))
-            if compare_color(img[y1 - 1][x1], b, g, r):
+            if y1 >= 1 and compare_color(img[y1 - 1][x1], b, g, r):
                 bot.appendleft((x1, y1 - 1, xc, yc - 1))
             x1 -= 1
             xc -= 1
         x1 = x2 + 1
         xc = xc1 + 1
         count = 0
-        while compare_color(img[y1][x1], b, g, r):
+        while y1 >= 0 and y1 < yb1 and x1 >= 0 and x1 < xb1 and compare_color(img[y1][x1], b, g, r):
             img[y1][x1] = bck[yc % yb][xc % xb]
-            if compare_color(img[y1 - 1][x1], b, g, r):
+            if y1 >= 1 and compare_color(img[y1 - 1][x1], b, g, r):
                 bot.append((x1, y1 - 1, xc, yc - 1))
-            if compare_color(img[y1 + 1][x1], b, g, r):
+            if y1 < yb1 - 1 and compare_color(img[y1 + 1][x1], b, g, r):
                 top.append((x1, y1 + 1, xc, yc + 1))
             x1 += 1
             xc += 1
