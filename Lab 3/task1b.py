@@ -6,8 +6,10 @@ from PyQt5.QtCore import Qt, QPoint
 from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton
 from PyQt5.QtGui import QPixmap, QPainter, QPen
 
+
 def compare_color(cl, b, g, r):
     return cl[0] == b and cl[1] == g and cl[2] == r
+
 
 def drawarea(img, bck, x, y):
     yb, xb, _ = bck.shape
@@ -53,16 +55,19 @@ def drawarea(img, bck, x, y):
         for x in bot:
             q.put(x)
     return img
+
+
 class Menu(QMainWindow):
     xc, yc = -1, -1
     xx, yy = -1, -1
+
     def __init__(self):
         super().__init__()
         self.drawing = False
         self.lastPoint = QPoint()
-        self.image = QPixmap(1100, 1000)#("white.png")
+        self.image = QPixmap(500, 500)  # ("white.png")
         self.title = 'Fill'
-        self.setGeometry(0, 0, 1200, 1200)
+        self.setGeometry(0, 0, 500, 500)
         self.resize(self.image.width(), self.image.height())
         self.initUI()
         self.show()
@@ -74,19 +79,34 @@ class Menu(QMainWindow):
         button1 = QPushButton('Go', self)
         button1.move(0,30)
         button1.clicked.connect(self.on_click2)
-        
-        
+
     def on_click1(self):
-        self.image = QPixmap(1000, 1000)
+        self.image = QPixmap(500, 500)
+        self.repaint()
         self.show()
         
     def on_click2(self):
         self.image.save("toalgo.png") 
         gbr = cv2.imread("toalgo.png")
         bground = cv2.imread("back.jpeg")
-        drawarea(gbr, bground, self.xx, self.yy)
-        cv2.imshow('[eq', gbr)
-        
+
+        img = drawarea(gbr, bground, self.xx, self.yy)
+
+        cv2.imwrite('tyan.png', img)
+        self.image = QPixmap("tyan.png")
+        self.repaint()
+        self.show()
+
+
+    # def on_click2(self):
+    #     self.image.save("new.png")
+    #     gbr = cv2.imread("new.png")
+    #     print(gbr.shape)
+    #     fill_lines(gbr, self.xx, self.yy)
+    #     # cv2.imshow('Result', gbr)
+    #     self.image = QPixmap("lol.png")
+    #     self.repaint()
+    #     self.show()
         
     def paintEvent(self, event):
         painter = QPainter(self)
