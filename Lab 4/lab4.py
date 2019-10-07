@@ -151,7 +151,7 @@ def belongsnon(points, x, y):
             if points[i][0] == x:
                 c1 += 1
 
-    res = c + c1 // 2
+    res = c - c1
     if res % 2 == 0:
         return False
     else:
@@ -171,7 +171,6 @@ if __name__ == '__main__':
     #print(intersection([390, 309], [657, 346], [518, 452], [318, 509]))
     #print(findside([183, 406], [617, 335], 502, 567))
     #print(findside([384, 486], [624, 261],402, 282))
-    print(findside([370, 461], [648, 210], 614, 359))
-    print(findside([370, 461], [648, 210], 373, 240))
+    print(belongsnon([[0,0], [2,2], [4,0]], 1, 2))
 
     #print(intersection([1,1],[5,5],[1,5],[5,1]))
