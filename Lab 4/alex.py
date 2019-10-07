@@ -10,15 +10,15 @@ class Gui:
     
     def __init__(self):
         self.window = Tk()
-        self.window.title("MECHMAT SILA")
-        self.window.resizable(False, False)
-        # current figure
-        self.points = []
         self.full_figure = False
         # point
         self.point = False
         self.point_x = 0
         self.point_y = 0
+        self.window.title("MECHMAT SILA")
+        self.window.resizable(False, False)
+        # current figure
+        self.points = []
         # canvas
         self.canvas = Canvas(self.window, width=self.CANVAS_WIDTH, height=self.CANVAS_HEIGHT-200, background='white')
         self.canvas.grid(row=0, column=0)
