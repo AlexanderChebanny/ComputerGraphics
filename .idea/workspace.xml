@@ -2,9 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d6c2845e-f42d-42ae-96c3-682d674673d8" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/Lab 3/art2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lab 3/lol.png" beforeDir="false" afterPath="$PROJECT_DIR$/Lab 3/lol.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lab 3/new.png" beforeDir="false" afterPath="$PROJECT_DIR$/Lab 3/new.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Lab 3/task1a.py" beforeDir="false" afterPath="$PROJECT_DIR$/Lab 3/task1a.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Lab 3/task1b.py" beforeDir="false" afterPath="$PROJECT_DIR$/Lab 3/task1b.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lab 3/task2.py" beforeDir="false" afterPath="$PROJECT_DIR$/Lab 3/task2.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Lab 3/toalgo.png" beforeDir="false" afterPath="$PROJECT_DIR$/Lab 3/toalgo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lab 3/tyan.png" beforeDir="false" afterPath="$PROJECT_DIR$/Lab 3/tyan.png" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -14,17 +19,29 @@
   </component>
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/ComputerGraphics$alex.coverage" NAME="alex Coverage Results" MODIFIED="1570439009935" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Lab 4" />
-    <SUITE FILE_PATH="coverage/ComputerGraphics$task2.coverage" NAME="task2 Coverage Results" MODIFIED="1570439161619" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Lab 3" />
-    <SUITE FILE_PATH="coverage/ComputerGraphics$task1b.coverage" NAME="task1b Coverage Results" MODIFIED="1570439995240" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Lab 3" />
-    <SUITE FILE_PATH="coverage/ComputerGraphics$task1a.coverage" NAME="task1a Coverage Results" MODIFIED="1570441003560" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Lab 3" />
+    <SUITE FILE_PATH="coverage/ComputerGraphics$task1b.coverage" NAME="task1b Coverage Results" MODIFIED="1570442459581" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Lab 3" />
+    <SUITE FILE_PATH="coverage/ComputerGraphics$task2.coverage" NAME="task2 Coverage Results" MODIFIED="1570443553064" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Lab 3" />
+    <SUITE FILE_PATH="coverage/ComputerGraphics$task1a.coverage" NAME="task1a Coverage Results" MODIFIED="1570442222224" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Lab 3" />
   </component>
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Lab 3/task1a.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="371">
+              <caret line="128" column="4" lean-forward="true" selection-start-line="128" selection-start-column="4" selection-end-line="136" selection-end-column="19" />
+              <folding>
+                <element signature="e#192#202#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Lab 3/task1b.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="148">
-              <caret line="67" column="42" selection-start-line="67" selection-start-column="42" selection-end-line="67" selection-end-column="42" />
+            <state relative-caret-position="280">
+              <caret line="94" column="8" selection-start-line="94" selection-start-column="8" selection-end-line="94" selection-end-column="36" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -33,12 +50,12 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Lab 3/task1a.py">
+        <entry file="file://$PROJECT_DIR$/Lab 3/task2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="19" column="8" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
+            <state relative-caret-position="397">
+              <caret line="63" column="26" lean-forward="true" selection-start-line="63" selection-start-column="26" selection-end-line="63" selection-end-column="26" />
               <folding>
-                <element signature="e#192#202#0" expanded="true" />
+                <element signature="e#0#10#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -60,11 +77,12 @@
         <option value="$PROJECT_DIR$/Lab 4/lab4.py" />
         <option value="$PROJECT_DIR$/Lab 3/task1b.py" />
         <option value="$PROJECT_DIR$/Lab 3/task1a.py" />
+        <option value="$PROJECT_DIR$/Lab 3/task2.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="67" />
+    <option name="x" value="678" />
     <option name="y" value="23" />
     <option name="width" value="1001" />
     <option name="height" value="970" />
@@ -86,11 +104,6 @@
               <item name="ComputerGraphics" type="b2602c69:ProjectViewProjectNode" />
               <item name="ComputerGraphics" type="462c0819:PsiDirectoryNode" />
               <item name="Lab 3" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ComputerGraphics" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ComputerGraphics" type="462c0819:PsiDirectoryNode" />
-              <item name="Lab 4" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -117,7 +130,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.task1a">
+  <component name="RunManager" selected="Python.task2">
     <configuration name="alex" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="ComputerGraphics" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -208,9 +221,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.task1a" />
-        <item itemvalue="Python.task1b" />
         <item itemvalue="Python.task2" />
+        <item itemvalue="Python.task1b" />
+        <item itemvalue="Python.task1a" />
         <item itemvalue="Python.alex" />
       </list>
     </recent_temporary>
@@ -225,16 +238,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1570438972150</updated>
-      <workItem from="1570438973486" duration="1773000" />
+      <workItem from="1570438973486" duration="4802000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1773000" />
+    <option name="totallyTimeSpent" value="4802000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="67" y="23" width="1001" height="970" extended-state="0" />
-    <editor active="true" />
+    <frame x="678" y="23" width="1001" height="970" extended-state="0" />
     <layout>
       <window_info id="Favorites" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1970803" />
@@ -248,7 +260,7 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.19931664" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3997722" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -273,16 +285,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Lab 3/task2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="12" lean-forward="true" selection-start-line="17" selection-start-column="12" selection-end-line="17" selection-end-column="12" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Lab 4/lab4.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="341">
@@ -301,22 +303,32 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Lab 3/task1a.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="371">
+          <caret line="128" column="4" lean-forward="true" selection-start-line="128" selection-start-column="4" selection-end-line="136" selection-end-column="19" />
+          <folding>
+            <element signature="e#192#202#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Lab 3/task1b.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="148">
-          <caret line="67" column="42" selection-start-line="67" selection-start-column="42" selection-end-line="67" selection-end-column="42" />
+        <state relative-caret-position="280">
+          <caret line="94" column="8" selection-start-line="94" selection-start-column="8" selection-end-line="94" selection-end-column="36" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Lab 3/task1a.py">
+    <entry file="file://$PROJECT_DIR$/Lab 3/task2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="8" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
+        <state relative-caret-position="397">
+          <caret line="63" column="26" lean-forward="true" selection-start-line="63" selection-start-column="26" selection-end-line="63" selection-end-column="26" />
           <folding>
-            <element signature="e#192#202#0" expanded="true" />
+            <element signature="e#0#10#0" expanded="true" />
           </folding>
         </state>
       </provider>

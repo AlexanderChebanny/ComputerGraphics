@@ -96,17 +96,6 @@ class Menu(QMainWindow):
         self.image = QPixmap("tyan.png")
         self.repaint()
         self.show()
-
-
-    # def on_click2(self):
-    #     self.image.save("new.png")
-    #     gbr = cv2.imread("new.png")
-    #     print(gbr.shape)
-    #     fill_lines(gbr, self.xx, self.yy)
-    #     # cv2.imshow('Result', gbr)
-    #     self.image = QPixmap("lol.png")
-    #     self.repaint()
-    #     self.show()
         
     def paintEvent(self, event):
         painter = QPainter(self)

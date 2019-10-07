@@ -1,8 +1,9 @@
 import sys
 import cv2
+import numpy as np
 from PyQt5.QtCore import Qt, QPoint
 from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton
-from PyQt5.QtGui import QPixmap, QPainter, QPen
+from PyQt5.QtGui import QPixmap, QPainter, QPen, QImage
 
 def white(pxl):
     return pxl[0] == 255 and pxl[1] == 255 and pxl[2] == 255
@@ -73,8 +74,9 @@ def findbound(img, xx, yy):
         (x, y) = el
         img[y][x] = [0, 0, 255]
 
+    return img
 
-        
+size = 1000
     
 # start pixel
 
@@ -88,8 +90,11 @@ class Menu(QMainWindow):
         self.drawing = False
         self.lastPoint = QPoint()
         self.image = QPixmap("white.png")
+        blank_image2 = 255 * np.ones(shape=[size, size, 3], dtype=np.uint8)
+        self.image = QPixmap.fromImage(QImage(blank_image2, blank_image2.shape[1], blank_image2.shape[0],
+                                              blank_image2.strides[0], QImage.Format_RGB888))
         self.title = 'Find bounds algo'
-        self.setGeometry(100, 100, 500, 300)
+        self.setGeometry(100, 100, size, size)
         self.resize(self.image.width(), self.image.height())
         self.initUI()
         self.show()
@@ -101,19 +106,25 @@ class Menu(QMainWindow):
         button1 = QPushButton('Go', self)
         button1.move(0,30)
         button1.clicked.connect(self.on_click2)
-        
-        
+
     def on_click1(self):
-        self.image = QPixmap("white.png")  
+        # self.image = QPixmap("white.png")
+        blank_image2 = 255 * np.ones(shape=[size, size, 3], dtype=np.uint8)
+        self.image = QPixmap.fromImage(QImage(blank_image2, blank_image2.shape[1], blank_image2.shape[0],
+                                              blank_image2.strides[0], QImage.Format_RGB888))
+        self.repaint()
         self.show()
         
     def on_click2(self):
         self.image.save("toalgo.png") 
         gbr = cv2.imread("toalgo.png")
-        findbound(gbr, self.xx, self.yy)
-        cv2.imshow('Result', gbr)
-        
-        
+        img = findbound(gbr, self.xx, self.yy)
+        # cv2.imshow('Result', gbr)
+        cv2.imwrite('task2.png', img)
+        self.image = QPixmap("task2.png")
+        self.repaint()
+        self.show()
+
     def paintEvent(self, event):
         painter = QPainter(self)
         painter.drawPixmap(self.rect(), self.image)
@@ -125,12 +136,11 @@ class Menu(QMainWindow):
         if event.button() == Qt.RightButton:
             self.yy = event.pos().y()
             self.xx = event.pos().x()
-            
-            
+
     def mouseMoveEvent(self, event):
         if event.buttons() and Qt.LeftButton and self.drawing:
             painter = QPainter(self.image)
-            painter.setPen(QPen(Qt.blue, 5, Qt.SolidLine))
+            painter.setPen(QPen(Qt.blue, 4, Qt.SolidLine))
             painter.drawLine(self.lastPoint, event.pos())
             self.lastPoint = event.pos()
             self.update()

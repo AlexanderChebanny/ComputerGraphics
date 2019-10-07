@@ -55,10 +55,9 @@ def draw_line_q(img, q):
             # print(left)
             right = right_border(img, x, y)
             # print(right)
-            cv2.line(img, (left, y), (right - 1, y), (255, 0, 0), 1)
+            cv2.line(img, (left, y), (right, y), (255, 0, 0), 1)
             cv2.imwrite('lol.png', img)
-
-            for i in range(left + 1, right - 1):
+            for i in range(left, right):
                 if y + 1 < size and img[y + 1, i, 0] == 255 and img[y + 1, i, 1] == 255 and img[y + 1, i, 1] == 255:
                     q.append((i, y + 1))
                 if y > 0 and img[y - 1, i, 0] == 255 and img[y - 1, i, 1] == 255 and img[y - 1, i, 1] == 255:
@@ -87,6 +86,7 @@ def fill_lines(img, x, y):
     cv2.imwrite('lol.png', img)
     return img
 
+
 # img
 gbr = []
 
@@ -104,9 +104,8 @@ class Menu(QMainWindow):
         self.setGeometry(100, 100, 300, 100)
 
         blank_image2 = 255 * np.ones(shape=[size, size, 3], dtype=np.uint8)
-        self.image = QPixmap.fromImage(
-            QImage(blank_image2, blank_image2.shape[1], blank_image2.shape[0], blank_image2.strides[0],
-                   QImage.Format_RGB888))
+        self.image = QPixmap.fromImage(QImage(blank_image2, blank_image2.shape[1], blank_image2.shape[0],
+                                              blank_image2.strides[0], QImage.Format_RGB888))
         self.resize(self.image.width(), self.image.height())
         self.initUI()
         self.show()
@@ -120,11 +119,9 @@ class Menu(QMainWindow):
         button1.clicked.connect(self.on_click2)
 
     def on_click1(self):
-        # self.image = QPixmap(size, size)
         blank_image2 = 255 * np.ones(shape=[size, size, 3], dtype=np.uint8)
-        self.image = QPixmap.fromImage(
-            QImage(blank_image2, blank_image2.shape[1], blank_image2.shape[0], blank_image2.strides[0],
-                   QImage.Format_RGB888))
+        self.image = QPixmap.fromImage(QImage(blank_image2, blank_image2.shape[1], blank_image2.shape[0],
+                                              blank_image2.strides[0], QImage.Format_RGB888))
         # self.image.save("art2.png")
         self.repaint()
         self.show()
@@ -154,7 +151,7 @@ class Menu(QMainWindow):
     def mouseMoveEvent(self, event):
         if event.buttons() and Qt.LeftButton and self.drawing:
             painter = QPainter(self.image)
-            painter.setPen(QPen(Qt.black, 5, Qt.SolidLine))
+            painter.setPen(QPen(Qt.black, 2, Qt.SolidLine))
             painter.drawLine(self.lastPoint, event.pos())
             self.lastPoint = event.pos()
             self.update()
@@ -162,27 +159,6 @@ class Menu(QMainWindow):
     def mouseReleaseEvent(self, event):
         if event.button == Qt.LeftButton:
             self.drawing = False
-
-
-def left_b(m, x, y):
-    left = 0
-    x_left = x
-    while 0 <= x_left:
-        x_left -= 1
-        if m[x_left][y] != 0:
-            return x_left
-    return left
-
-
-# find left border for current x and y
-def left_border(img, x, y):
-    left = 1
-    x_left = x
-    while 1 < x_left:
-        x_left -= 1
-        if int(img[y, x_left, 0]) == 0:
-            return x_left
-    return left
 
 
 if __name__ == '__main__':
