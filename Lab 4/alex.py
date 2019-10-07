@@ -169,16 +169,18 @@ class Gui:
     def segments_intersection(self):
         if len(self.points) == 4:
             p1, p2, p3, p4 = self.points
+            #print(p1, p2, p3, p4)
             res = intersection( p1, p2, p3, p4)
-            if not res:
+            if res != []:
                 x, y = res
-                Label(self.window, text="x: " + str(x) + "; y: "+ str(y)).grid(row=1, column=5)
+                Label(self.window, text="x: " + str(round(x,2)) + "; y: "+ str(round(y,2))).grid(row=1, column=5)
             else:
                 Label(self.window, text="No intersection").grid(row=1, column=5)
         else:
             Label(self.window, text="Draw Valid Two Segments").grid(row=1, column=5)
             
     def in_convex_polygon(self):
+        print(belongs(self.points, self.point_x, self.point_y))
         if self.full_figure:
             if belongs(self.points, self.point_x, self.point_y):
                 Label(self.window, text="True").grid(row=0, column=2)
@@ -198,6 +200,8 @@ class Gui:
     
     def point_position(self):
         if len(self.points) == 2:
+            print(self.points)
+            print(self.point_x, self.point_y)
             if findside(self.points[0], self.points[1], self.point_x, self.point_y):
                 Label(self.window, text="Right").grid(row=4, column=4)
             else:
