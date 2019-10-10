@@ -1,12 +1,12 @@
 """
-Лысенко Н. С.
+Лысенко Никита 4.8
 
 Лабораторная работа №3. Растровые алгоритмы
 Работа в командах.
 
-Задание 1. Рекурсивный алгоритм заливки на основе серий пикселов (линий).
+    Задание 1. Рекурсивный алгоритм заливки на основе серий пикселов (линий).
 
-1а) Заливка заданным цветом.
+    1а) Заливка заданным цветом.
 """
 
 import sys
@@ -17,7 +17,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton
 from PyQt5.QtGui import QPixmap, QPainter, QPen, QImage
 
 
-size = 400
+size = 700
 
 
 # find left border for current x and y
@@ -122,7 +122,7 @@ class Menu(QMainWindow):
         blank_image2 = 255 * np.ones(shape=[size, size, 3], dtype=np.uint8)
         self.image = QPixmap.fromImage(QImage(blank_image2, blank_image2.shape[1], blank_image2.shape[0],
                                               blank_image2.strides[0], QImage.Format_RGB888))
-        # self.image.save("art2.png")
+        # self.image.save("art.png")
         self.repaint()
         self.show()
 

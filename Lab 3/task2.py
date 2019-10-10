@@ -1,3 +1,17 @@
+"""
+Замай Антон 4.8
+
+Лабораторная работа №3. Растровые алгоритмы
+Работа в командах.
+
+    Задание 2. Выделение границы связной области.
+
+    На вход подается изображение. Граница связной области задается одним цветом. Имея начальную точку границы
+    организовать ее обход, занося точки в список в порядке обхода.
+    Начальную точку границы можно получать любым способом.
+    Для контроля полученную границу прорисовать поверх исходного изображения.
+"""
+
 import sys
 import cv2
 import numpy as np
@@ -5,86 +19,66 @@ from PyQt5.QtCore import Qt, QPoint
 from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton
 from PyQt5.QtGui import QPixmap, QPainter, QPen, QImage
 
-def white(pxl):
-    return pxl[0] == 255 and pxl[1] == 255 and pxl[2] == 255
 
-def findfirstx(img, xx, yy):
+def eq(pix1, pix2):
+    return pix1[0] == pix2[0] and pix1[1] == pix2[1] and pix1[2] == pix2[2]
+
+
+def findfirstx(img, xx, yy, bnd_clr):
     if len(img) == 0 and len(img[0]) == 0:
         print('Wrong image size')
         return -1
-        
+
     for j in range(xx, len(img[0])):
-        if not white(img[yy][j]):
+        if eq(img[yy][j], bnd_clr):
             return j
-            
 
-def nearpix(direc, x, y):
-    if direc == 0:
-        return x + 1, y
-    elif direc == 1:
-        return x + 1, y - 1
-    elif direc == 2:
-        return x, y - 1
-    elif direc == 3:
-        return x - 1, y - 1
-    elif direc == 4:
-        return x - 1, y
-    elif direc == 5:
-        return x - 1, y + 1
-    elif direc == 6:
-        return x, y + 1
-    elif direc == 7:
-        return x + 1, y + 1
 
-def bp1(img, x, y):
-    return white(img[y - 1][x]) or white(img[y + 1][x]) or white(img[y][x - 1]) or white(img[y][x + 1])
+def nextclw(curp, backp):
+    dif = (backp[0] - curp[0], backp[1] - curp[1])
+    clw = [(-1, -1), (0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0)]
+    offset = clw[(clw.index(dif) + 1) % len(clw)]
+    newp = (curp[0] + offset[0], curp[1] + offset[1])
+    return newp
 
-def bp2(img, x, y):
-    return bp1(img, x, y) or white(img[y - 1][x - 1]) or white(img[y - 1][x + 1]) or white(img[y + 1][x - 1]) or white(img[y + 1][x + 1])
 
-def findbound(img, xx, yy):
-    '''
-    ————>x
-    |
-    |
-    v
-    y
-    '''
-    '''
-    3 2 1
-    4 X 0
-    5 6 7
-    '''
+def findbound(img, xx, yy, bnd_clr):
     y = yy
-    x = findfirstx(img, xx, yy)
-    direc = 6
-    bnd = set()
-    while not ((x, y) in bnd):
-        bnd.add((x, y))
-        for i in range(8):
-            d = (direc - i + 8) % 8
-            xn, yn = nearpix(d, x, y)
-            if not white(img[yn][xn]) and not ((xn, yn) in bnd) and bp1(img, xn, yn):
-                x = xn
-                y = yn
-                direc = d
-                break
-              
+    x = findfirstx(img, xx, yy, bnd_clr)
+    startp = (x, y)
+    bnd = []
+    backp = (x - 1, y)
+    bndp = (x, y)
+    curp = nextclw(bndp, backp)
+    while curp != startp:
+        if eq(img[curp[1]][curp[0]], bnd_clr):
+            bnd.append(curp)
+            backp = bndp
+            bndp = curp
+            curp = nextclw(bndp, backp)
+        else:
+            backp = curp
+            curp = nextclw(bndp, backp)
+    print(bnd)
     for el in bnd:
         (x, y) = el
         img[y][x] = [0, 0, 255]
 
     return img
 
-size = 1000
+
+size = 500
     
 # start pixel
 
 # img
 gbr = []
+
+
 class Menu(QMainWindow):
     xx = -1
     yy = -1
+
     def __init__(self):
         super().__init__()
         self.drawing = False
@@ -118,7 +112,7 @@ class Menu(QMainWindow):
     def on_click2(self):
         self.image.save("toalgo.png") 
         gbr = cv2.imread("toalgo.png")
-        img = findbound(gbr, self.xx, self.yy)
+        img = findbound(gbr, self.xx, self.yy, [255, 0, 0])
         # cv2.imshow('Result', gbr)
         cv2.imwrite('task2.png', img)
         self.image = QPixmap("task2.png")
