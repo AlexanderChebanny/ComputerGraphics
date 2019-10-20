@@ -1,0 +1,4 @@
+X 90 0
+F => F
+X => -YF+XFX+FY-
+Y => +XF-YFY-FX+
