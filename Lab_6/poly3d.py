@@ -277,7 +277,7 @@ class N_edge(object):
         
     # Масштабирование относительно провзольной точки
     def scaleP(self, point, xscale, yscale, zscale):
-        scale = [[xscale, 0, 0, 0], [0, yscale, 0, 0], [0, 0, zscale, 0], [0, 0, 0 ,1]]
+        scale = [[xscale, 0, 0, 0], [0, yscale, 0, 0], [0, 0, zscale, 0], [0, 0, 0, 1]]
         newpoints = []
         for p in self._points:
             pbas = p
