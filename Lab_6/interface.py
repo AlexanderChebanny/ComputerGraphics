@@ -13,6 +13,15 @@ class Gui:
         self.figure = None
         self.proection = None   # проецирование = 0 (ортографическое), 1 (изометрическое), 2 (перспективное)
         self.xyz = None         # проецирование = 0 (на yz), 1 (на xz), 2 (на xy) ДЛЯ ОРТОГРАФИЧЕСКИХ
+        self.what_scale = None
+
+        self.x_shift = 300.0
+        self.y_shift = 300.0
+        self.z_shift = 300.0
+
+        self.x_scale = 1.0
+        self.y_scale = 1.0
+        self.z_scale = 1.0
 
         self.window.title("MECHMAT SILA")
         self.window.resizable(False, False)
@@ -134,19 +143,69 @@ class Gui:
         self.option_menu5 = ttk.OptionMenu(self.window, self.what_xyz_reflection, *OPTIONS_xyz_reflection)
         self.option_menu5.grid(row=7, column=3)
 
+        # СДВИГ
+        self.reflection_button = ttk.Button(self.window, text='Сдвиг', command=self.shift_action)
+        self.reflection_button.grid(row=8, column=1)
+
+        ttk.Label(self.window, text="Shift: ").grid(row=8, column=3)
+
+        self.label7 = ttk.Label(self.window, text='X: ')
+        self.label7.grid(row=8, column=4)
+        self.shift_x = Entry(self.window, width=5)
+        self.shift_x.grid(row=8, column=5)
+        self.shift_x.insert(0, "0")
+
+        self.label8 = ttk.Label(self.window, text='Y: ')
+        self.label8.grid(row=8, column=6)
+        self.shift_y = Entry(self.window, width=5)
+        self.shift_y.grid(row=8, column=7)
+        self.shift_y.insert(0, "0")
+
+        self.label9 = ttk.Label(self.window, text='Z: ')
+        self.label9.grid(row=8, column=8)
+        self.shift_z = Entry(self.window, width=5)
+        self.shift_z.grid(row=8, column=9)
+        self.shift_z.insert(0, "0")
+
         # МАСШТАБИРОВАНИЕ
         self.scale_button = ttk.Button(self.window, text='Scale', command=self.scale_action)
-        self.scale_button.grid(row=8, column=1)
+        self.scale_button.grid(row=10, column=1)
 
-        ttk.Label(self.window, text="Scale: ").grid(row=8, column=2)
-        self.scale_input = Entry(self.window, width=7)
-        self.scale_input.insert(0, "1")
-        self.scale_input.grid(row=9, column=2)
+        ttk.Label(self.window, text="Scale: ").grid(row=10, column=3)
+
+        self.label10 = ttk.Label(self.window, text='X: ')
+        self.label10.grid(row=10, column=4)
+        self.scale_x = Entry(self.window, width=5)
+        self.scale_x.grid(row=10, column=5)
+        self.scale_x.insert(0, "1")
+
+        self.label11 = ttk.Label(self.window, text='Y: ')
+        self.label11.grid(row=10, column=6)
+        self.scale_y = Entry(self.window, width=5)
+        self.scale_y.grid(row=10, column=7)
+        self.scale_y.insert(0, "1")
+
+        self.label12 = ttk.Label(self.window, text='Z: ')
+        self.label12.grid(row=10, column=8)
+        self.scale_z = Entry(self.window, width=5)
+        self.scale_z.grid(row=10, column=9)
+        self.scale_z.insert(0, "1")
 
         self.window.mainloop()
 
     def ok(self):
         print("value is: " + self.what_figure.get())
+
+    def shift_action(self):
+        """
+        Сдвиг
+        """
+        self.x_shift += float(self.shift_x.get())
+        self.y_shift += float(self.shift_y.get())
+        self.z_shift += float(self.shift_z.get())
+
+        self.figure.shift(xshift=self.x_shift-300, yshift=self.y_shift-300, zshift=self.z_shift-300)
+        self.plot_figure()
 
     def rotate_action(self):
         """
@@ -162,6 +221,7 @@ class Gui:
         elif self.what_rotate.get() == "оси Z":
             key = 2
 
+        print(key)
         self.figure.rotation(angle=angle, key=key)
         self.plot_figure()
 
@@ -196,8 +256,22 @@ class Gui:
         """
         Масштабирование
         """
-        scale = float(self.scale_input.get())
-        self.figure.scaleC(xscale=scale, yscale=scale, zscale=scale)
+        if float(self.scale_x.get()) == 0.0:
+            self.x_scale = 0.0
+        else:
+            self.x_scale *= float(self.scale_x.get())
+
+        if float(self.scale_y.get()) == 0.0:
+            self.y_scale = 0.0
+        else:
+            self.y_scale *= float(self.scale_y.get())
+
+        if float(self.scale_z.get()) == 0.0:
+            self.z_scale = 0.0
+        else:
+            self.z_scale *= float(self.scale_z.get())
+
+        self.figure.scaleC(xscale=self.x_scale, yscale=self.y_scale, zscale=self.z_scale)
         self.plot_figure()
 
     def clear_window(self):
@@ -211,12 +285,17 @@ class Gui:
         Отрисовка изменённой фигуры
         """
         self.clear_window()
-        obj = self.figure.setcenter(300, 300, 0).rotationXYZ(20, 60, 60)
-        pnts, edgs = obj.projection(tp=self.proection, key=self.xyz)
+        pnts, edgs = self.figure.projection(tp=self.proection, key=self.xyz)
+
         for e in edgs:
             p1 = pnts[e[0]]
             p2 = pnts[e[1]]
-            self.canvas.create_line(p1.x, p1.y, p2.x, p2.y)
+            if self.xyz == 2:
+                self.canvas.create_line(p1.x, p1.y, p2.x, p2.y)
+            elif self.xyz == 1:
+                self.canvas.create_line(p1.x, p1.z, p2.x, p2.z)
+            elif self.xyz == 0:
+                self.canvas.create_line(p1.y, p1.z, p2.y, p2.z)
 
     def left_button_release(self, event):
         """
@@ -250,8 +329,31 @@ class Gui:
         elif self.what_xyz.get() == 'xy':
             key = 2
 
+        self.shift_x.delete(0, END)
+        self.shift_x.insert(0, "0")
+        self.shift_y.delete(0, END)
+        self.shift_y.insert(0, "0")
+        self.shift_z.delete(0, END)
+        self.shift_z.insert(0, "0")
+
+        self.scale_x.delete(0, END)
+        self.scale_x.insert(0, "1")
+        self.scale_y.delete(0, END)
+        self.scale_y.insert(0, "1")
+        self.scale_z.delete(0, END)
+        self.scale_z.insert(0, "1")
+
+        self.x_shift = 300.0
+        self.y_shift = 300.0
+        self.z_shift = 300.0
+
+        self.x_scale = 1.0
+        self.y_scale = 1.0
+        self.z_scale = 1.0
+
         self.proection = tp
         self.xyz = key
+        self.figure.setcenter(x=300, y=300, z=300)
         self.plot_figure()
 
 

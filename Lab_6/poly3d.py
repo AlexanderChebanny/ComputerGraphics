@@ -9,7 +9,7 @@ EPS = 0.000001
 # Класс точка
 class P(object):
     
-    def __init__(self, x = 0, y = 0, z = 0):
+    def __init__(self, x=0, y=0, z=0):
         self.x = x
         self.y = y
         self.z = z
@@ -200,7 +200,7 @@ class N_edge(object):
             newpoints.append(P(newp[0], newp[1], newp[2]) + P(x, y, z))
             
         if (flag):
-            self.setcenter(x, y, z)
+           self.setcenter(x, y, z)
             
         return newpoints, self._edges
  
