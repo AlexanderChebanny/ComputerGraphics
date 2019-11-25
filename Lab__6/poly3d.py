@@ -255,24 +255,27 @@ class N_edge(object):
         else: 
             pshift = p2 - p1
             pmin = p1
-            
-        self.shift(-pmin.x, -pmin.y, -pmin.z)
+
+        # self.shift(-pmin.x, -pmin.y, -pmin.z)
         norm = m.sqrt(pshift.x ** 2 + pshift.y ** 2 + pshift.z ** 2)
+
         l = pshift.x/norm
         h = pshift.y/norm
         n = pshift.z/norm
         
-        rot = [[l ** 2 + m.cos(r) * (1 - l**2), l * (1 - m.cos(r)) * h + n * m.sin(r), l * (1 - m.cos(r)) * n - h * m.sin(r), 0], 
-               [l * (1 - m.cos(r)) * h - n * m.sin(r), h ** 2 + m.cos(r) * (1 - h**2), h * (1 - m.cos(r)) * n + l * m.sin(r), 0], 
-               [l * (1 - m.cos(r)) * n + h * m.sin(r), h * (1 - m.cos(r)) * n - l * m.sin(r), n ** 2 + m.cos(r) * (1 - n**2), 0], 
-               [0, 0, 0, 1]]
+        rot = [
+            [l * l + m.cos(r) * (1 - l * l), l * (1 - m.cos(r)) * h + n * m.sin(r), l * (1 - m.cos(r)) * n - h * m.sin(r), 0],
+            [l * (1 - m.cos(r)) * h - n * m.sin(r), h * h + m.cos(r) * (1 - h * h), h * (1 - m.cos(r)) * n + l * m.sin(r), 0],
+            [l * (1 - m.cos(r)) * n + h * m.sin(r), h * (1 - m.cos(r)) * n - l * m.sin(r), n * n + m.cos(r) * (1 - n * n), 0],
+            [0, 0, 0, 1]
+        ]
         
         newpoints = []
         for p in self._points:
             newp = np.matmul([p.x, p.y, p.z, 1], rot)
             newpoints.append(P(newp[0], newp[1], newp[2]))
         self._points = newpoints
-        self.shift(pmin.x, pmin.y, pmin.z)
+        # self.shift(pmin.x, pmin.y, pmin.z)
         return self
         
     # Масштабирование относительно провзольной точки
@@ -332,6 +335,12 @@ class N_edge(object):
             newpoints.append(P(newp[0], newp[1], newp[2]) + pend)
         self._points = newpoints
         return self
+
+    def print_info(self):
+        print('\n=======================')
+        for point in self._points:
+            print(point)
+        print('=======================\n')
 
 
 # Класс тетраэдр (пирамида)
@@ -418,3 +427,10 @@ class Dodecahedron(N_edge):
                         [11, 17], [12, 13], [12, 18], [13, 14], [13, 15],
                         [14, 19], [15, 16], [15, 17], [16, 18], [17, 19]]
          self = self.scaleC(scale, scale, scale)
+
+
+obj = Icosahedron()
+for i in range(5):
+    obj.print_info()
+    print('Center: ', obj.center())
+    obj.rotationL(P(100, 100, 100), P(200, 200, 200), 60)

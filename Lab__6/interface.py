@@ -1,4 +1,4 @@
-from Lab_6.poly3d import *
+from Lab__6.poly3d import *
 from tkinter import *
 from tkinter import ttk
 
