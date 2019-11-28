@@ -450,12 +450,14 @@ class Func(N_edge):
 
         self._worldcoor = False
         self._center = P((x1 - x0) / 2, (y1 - y0) / 2, (max1 - min1) / 2)
- 
+
+
 # Класс додекаэдр (12-гранник) dodecahedron
 def main():
     f = Func(f=lambda x, y: x + y, x0=1, x1=2, y0=1, y1=2, step=0.5)
     print(f._points)
     print(f._edges)
-    
+
+
 if __name__ == "__main__":
     main()

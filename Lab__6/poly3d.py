@@ -429,8 +429,30 @@ class Dodecahedron(N_edge):
          self = self.scaleC(scale, scale, scale)
 
 
-obj = Icosahedron()
-for i in range(5):
-    obj.print_info()
-    print('Center: ', obj.center())
-    obj.rotationL(P(100, 100, 100), P(200, 200, 200), 60)
+# Груфик функции двух переменных
+class Func(N_edge):
+
+    def __init__(self, f, x0, x1, y0, y1, step = 0.1):
+        max1 = min1 = f(x0, y0)
+        self._points = []
+        self._edges = []
+        x = x0
+        i = 0
+        while x <= x1 + step / 10000:
+            y = y0
+            while y <= y1 + step / 10000:
+                z = f(x, y)
+                if z < min1:
+                    min1 = z
+                if z > max1:
+                    max1 = z
+                self._points.append(P(x, y, z))
+                if y != y0:
+                    self._edges.append([i, i + 1])
+                    i += 1
+                y += step
+            i += 1
+            x += step
+
+        self._worldcoor = False
+        self._center = P((x1 - x0) / 2, (y1 - y0) / 2, (max1 - min1) / 2)

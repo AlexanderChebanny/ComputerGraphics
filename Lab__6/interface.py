@@ -24,16 +24,14 @@ class Gui:
         self.clear_button = ttk.Button(self.window, text='Clear', command=self.clear_window)
         self.clear_button.grid(row=15, column=2)
 
-        self.ok_button = ttk.Button(self.window, text='INFO', command=self.info)
-        self.ok_button.grid(row=16, column=2)
-
         self.OPTIONS_figure = [
             "",
             "Тетраэдр",
             "Гексаэдр",
             "Октаэдр",
             "Икосаэдр",
-            "Додекаэдр"
+            "Додекаэдр",
+            "Функция"
         ]
         self.label1 = ttk.Label(self.window, text='Фигура:                ')
         self.label1.grid(row=1, column=1)
@@ -166,18 +164,31 @@ class Gui:
         self.window.mainloop()
 
     def plot_figure(self):
-        self.canvas.delete("all")
+        # pnts, edgs = self.figure.projection(tp=self.proection, key=self.xyz)
+        # for e in edgs:
+        #     p1 = pnts[e[0]]
+        #     p2 = pnts[e[1]]
+        #     if self.xyz == 2:
+        #         self.canvas.create_line(p1.x, p1.y, p2.x, p2.y)
+        #     elif self.xyz == 1:
+        #         self.canvas.create_line(p1.x, p1.z, p2.x, p2.z)
+        #     elif self.xyz == 0:
+        #         self.canvas.create_line(p1.y, p1.z, p2.y, p2.z)
 
+        """
+        Отрисовка изменённой фигуры
+        """
+        self.clear_window()
         pnts, edgs = self.figure.projection(tp=self.proection, key=self.xyz)
         for e in edgs:
             p1 = pnts[e[0]]
             p2 = pnts[e[1]]
-            if self.xyz == 2:
-                self.canvas.create_line(p1.x, p1.y, p2.x, p2.y)
+            if self.xyz == 0:
+                self.canvas.create_line(p1.y, -p1.z + self.size / 2, p2.y, -p2.z + self.size / 2)
             elif self.xyz == 1:
-                self.canvas.create_line(p1.x, p1.z, p2.x, p2.z)
-            elif self.xyz == 0:
-                self.canvas.create_line(p1.y, p1.z, p2.y, p2.z)
+                self.canvas.create_line(p1.x, -p1.z + self.size / 2, p2.x, -p2.z + self.size / 2)
+            elif self.xyz == 2:
+                self.canvas.create_line(p1.x, -p1.y + self.size, p2.x, -p2.y + self.size)
 
     def left_button_release(self,  event):
         """
@@ -194,6 +205,8 @@ class Gui:
             self.figure = Icosahedron()
         elif self.what_figure.get() == "Додекаэдр":
             self.figure = Dodecahedron()
+        elif self.what_figure.get() == "Функция":
+            self.figure = Func(f=lambda x, y: np.sin((x + y) * 3), x0=0, x1=1, y0=0, y1=1, step=0.1)
 
         tp = 0
         if self.what_proection.get() == 'Перспективная':
@@ -223,7 +236,7 @@ class Gui:
         """
         Отчистка окна
         """
-        self.set_default_values()
+        # self.set_default_values()
         self.canvas.delete("all")
 
     def set_default_values(self):
@@ -267,11 +280,6 @@ class Gui:
         self.p2_z.delete(0, END)
         self.p2_z.insert(0, "0")
 
-    def info(self):
-        print("Now is: {0}, {1}, {2}".format(self.what_figure.get(),
-                                             self.what_proection.get(),
-                                             self.what_xyz.get()))
-
     def rotate_action(self):
         """
         Поворот
@@ -286,6 +294,8 @@ class Gui:
         elif self.what_rotate.get() == "оси Z":
             key = 2
 
+        print('Rotate - angle: {}; key: {}'.format(angle, key))
+
         self.figure = self.figure.rotation(angle=angle, key=key)
         self.plot_figure()
 
@@ -297,6 +307,8 @@ class Gui:
 
         p1 = P(x=float(self.p1_x.get()), y=float(self.p1_y.get()), z=float(self.p1_z.get()))
         p2 = P(x=float(self.p2_x.get()), y=float(self.p2_y.get()), z=float(self.p2_z.get()))
+
+        print('Rotate line - angle: {}; p1: {}; p2: {}'.format(angle, p1, p2))
 
         self.figure = self.figure.rotationL(p1=p1, p2=p2, angle=angle)
         self.plot_figure()
