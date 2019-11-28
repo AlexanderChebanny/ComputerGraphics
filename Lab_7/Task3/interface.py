@@ -1,7 +1,6 @@
-from poly3d import *
+from Lab_7.Task3.poly3d import *
 from tkinter import *
 from tkinter import ttk
-from PIL import Image, ImageTk, ImageDraw
 
 
 class Gui:
@@ -26,10 +25,7 @@ class Gui:
         self.clear_button = ttk.Button(self.window, text='Clear', command=self.clear_window)
         self.clear_button.grid(row=15, column=2)
 
-        self.ok_button = ttk.Button(self.window, text='Ok', command=self.ok)
-        self.ok_button.grid(row=16, column=2)
-
-        OPTIONS_figure = [
+        self.OPTIONS_figure = [
             "",
             "Тетраэдр",
             "Гексаэдр",
@@ -41,11 +37,11 @@ class Gui:
         self.label1 = ttk.Label(self.window, text='Фигура:                ')
         self.label1.grid(row=1, column=1)
         self.what_figure = StringVar(self.window)
-        self.what_figure.set(OPTIONS_figure[2])
-        self.option_menu1 = ttk.OptionMenu(self.window, self.what_figure, *OPTIONS_figure)
+        self.what_figure.set(self.OPTIONS_figure[2])
+        self.option_menu1 = ttk.OptionMenu(self.window, self.what_figure, *self.OPTIONS_figure)
         self.option_menu1.grid(row=2, column=1)
 
-        OPTIONS_proection = [
+        self.OPTIONS_proection = [
             "",
             "Ортографическая",
             "Изометрическая",
@@ -54,11 +50,11 @@ class Gui:
         self.label2 = ttk.Label(self.window, text='Проекция:                     ')
         self.label2.grid(row=1, column=2)
         self.what_proection = StringVar(self.window)
-        self.what_proection.set(OPTIONS_proection[1])
-        self.option_menu2 = ttk.OptionMenu(self.window, self.what_proection, *OPTIONS_proection)
+        self.what_proection.set(self.OPTIONS_proection[1])
+        self.option_menu2 = ttk.OptionMenu(self.window, self.what_proection, *self.OPTIONS_proection)
         self.option_menu2.grid(row=2, column=2)
 
-        OPTIONS_xyz = [
+        self.OPTIONS_xyz = [
             "",
             "xy",
             "xz",
@@ -67,8 +63,8 @@ class Gui:
         self.label3 = ttk.Label(self.window, text='Проецирование на: ')
         self.label3.grid(row=1, column=3)
         self.what_xyz = StringVar(self.window)
-        self.what_xyz.set(OPTIONS_xyz[1])
-        self.option_menu3 = ttk.OptionMenu(self.window, self.what_xyz, *OPTIONS_xyz)
+        self.what_xyz.set(self.OPTIONS_xyz[1])
+        self.option_menu3 = ttk.OptionMenu(self.window, self.what_xyz, *self.OPTIONS_xyz)
         self.option_menu3.grid(row=2, column=3)
 
         # ПОВОРОТ
@@ -77,7 +73,7 @@ class Gui:
         self.angle_input.insert(0, "180")
         self.angle_input.grid(row=4, column=2)
 
-        OPTIONS_rotate = [
+        self.OPTIONS_rotate = [
             "",
             "оси X",
             "оси Y",
@@ -86,8 +82,8 @@ class Gui:
         self.label4 = ttk.Label(self.window, text='Поворот относительно: ')
         self.label4.grid(row=3, column=3)
         self.what_rotate = StringVar(self.window)
-        self.what_rotate.set(OPTIONS_rotate[1])
-        self.option_menu4 = ttk.OptionMenu(self.window, self.what_rotate, *OPTIONS_rotate)
+        self.what_rotate.set(self.OPTIONS_rotate[1])
+        self.option_menu4 = ttk.OptionMenu(self.window, self.what_rotate, *self.OPTIONS_rotate)
         self.option_menu4.grid(row=4, column=3)
 
         self.rotate_button = ttk.Button(self.window, text='Rotate', command=self.rotate_action)
@@ -122,7 +118,7 @@ class Gui:
         # ОТРАЖЕНИЕ
         self.reflection_button = ttk.Button(self.window, text='Отражение', command=self.reflection_action)
         self.reflection_button.grid(row=6, column=1)
-        OPTIONS_xyz_reflection = [
+        self.OPTIONS_xyz_reflection = [
             "",
             "xy",
             "xz",
@@ -131,23 +127,115 @@ class Gui:
         self.label3 = ttk.Label(self.window, text='Отражение относительно: ')
         self.label3.grid(row=6, column=3)
         self.what_xyz_reflection = StringVar(self.window)
-        self.what_xyz_reflection.set(OPTIONS_xyz_reflection[1])
-        self.option_menu5 = ttk.OptionMenu(self.window, self.what_xyz_reflection, *OPTIONS_xyz_reflection)
+        self.what_xyz_reflection.set(self.OPTIONS_xyz_reflection[1])
+        self.option_menu5 = ttk.OptionMenu(self.window, self.what_xyz_reflection, *self.OPTIONS_xyz_reflection)
         self.option_menu5.grid(row=7, column=3)
+
+        # СДВИГ
+        self.reflection_button = ttk.Button(self.window, text='Сдвиг', command=self.shift_action)
+        self.reflection_button.grid(row=8, column=1)
+
+        ttk.Label(self.window, text="Shift: ").grid(row=8, column=3)
+
+        self.label7 = ttk.Label(self.window, text='X: ')
+        self.label7.grid(row=8, column=4)
+        self.shift_x = Entry(self.window, width=5)
+        self.shift_x.grid(row=8, column=5)
+
+        self.label8 = ttk.Label(self.window, text='Y: ')
+        self.label8.grid(row=8, column=6)
+        self.shift_y = Entry(self.window, width=5)
+        self.shift_y.grid(row=8, column=7)
+
+        self.label9 = ttk.Label(self.window, text='Z: ')
+        self.label9.grid(row=8, column=8)
+        self.shift_z = Entry(self.window, width=5)
+        self.shift_z.grid(row=8, column=9)
 
         # МАСШТАБИРОВАНИЕ
         self.scale_button = ttk.Button(self.window, text='Scale', command=self.scale_action)
-        self.scale_button.grid(row=8, column=1)
+        self.scale_button.grid(row=9, column=1)
 
-        ttk.Label(self.window, text="Scale: ").grid(row=8, column=2)
-        self.scale_input = Entry(self.window, width=7)
-        self.scale_input.insert(0, "1")
-        self.scale_input.grid(row=9, column=2)
+        ttk.Label(self.window, text="Scale: ").grid(row=9, column=3)
+        # self.scale_input = Entry(self.window, width=7)
+        # self.scale_input.insert(0, "1")
+        # self.scale_input.grid(row=9, column=2)
 
+        self.label10 = ttk.Label(self.window, text='X: ')
+        self.label10.grid(row=9, column=4)
+        self.scale_x = Entry(self.window, width=5)
+        self.scale_x.grid(row=9, column=5)
+
+        self.label11 = ttk.Label(self.window, text='Y: ')
+        self.label11.grid(row=9, column=6)
+        self.scale_y = Entry(self.window, width=5)
+        self.scale_y.grid(row=9, column=7)
+
+        self.label12 = ttk.Label(self.window, text='Z: ')
+        self.label12.grid(row=9, column=8)
+        self.scale_z = Entry(self.window, width=5)
+        self.scale_z.grid(row=9, column=9)
+
+        # ttk.Label(self.window, text="Scale: ").grid(row=10, column=3)
+        #
+        # self.label10 = ttk.Label(self.window, text='X: ')
+        # self.label10.grid(row=10, column=4)
+        # self.scale_x = Entry(self.window, width=5)
+        # self.scale_x.grid(row=10, column=5)
+        #
+        # self.label11 = ttk.Label(self.window, text='Y: ')
+        # self.label11.grid(row=10, column=6)
+        # self.scale_y = Entry(self.window, width=5)
+        # self.scale_y.grid(row=10, column=7)
+        #
+        # self.label12 = ttk.Label(self.window, text='Z: ')
+        # self.label12.grid(row=10, column=8)
+        # self.scale_z = Entry(self.window, width=5)
+        # self.scale_z.grid(row=10, column=9)
+
+        self.set_default_values()
         self.window.mainloop()
 
-    def ok(self):
-        print("value is: " + self.what_figure.get())
+    def set_default_values(self):
+        """
+        Установка значений по умолчанию во всех элементах интерфейса.
+        Функция вызывается при первом запуске.
+        """
+        self.what_figure.set(self.OPTIONS_figure[1])
+        self.what_xyz.set(self.OPTIONS_xyz[1])
+        self.what_proection.set(self.OPTIONS_proection[1])
+        self.angle_input.delete(0, END)
+        self.angle_input.insert(0, "180")
+        self.what_rotate.set(self.OPTIONS_rotate[1])
+        self.what_xyz_reflection.set(self.OPTIONS_xyz_reflection[1])
+
+        self.shift_x.delete(0, END)
+        self.shift_x.insert(0, "0")
+        self.shift_y.delete(0, END)
+        self.shift_y.insert(0, "0")
+        self.shift_z.delete(0, END)
+        self.shift_z.insert(0, "0")
+
+        self.scale_x.delete(0, END)
+        self.scale_x.insert(0, "1")
+        self.scale_y.delete(0, END)
+        self.scale_y.insert(0, "1")
+        self.scale_z.delete(0, END)
+        self.scale_z.insert(0, "1")
+
+        # self.p1_x.delete(0, END)
+        # self.p1_x.insert(0, "0")
+        # self.p1_y.delete(0, END)
+        # self.p1_y.insert(0, "0")
+        # self.p1_z.delete(0, END)
+        # self.p1_z.insert(0, "0")
+        #
+        # self.p2_x.delete(0, END)
+        # self.p2_x.insert(0, "0")
+        # self.p2_y.delete(0, END)
+        # self.p2_y.insert(0, "0")
+        # self.p2_z.delete(0, END)
+        # self.p2_z.insert(0, "0")
 
     def rotate_action(self):
         """
@@ -173,7 +261,6 @@ class Gui:
 
         p1 = P(x=float(self.p1_x.get()), y=float(self.p1_y.get()), z=float(self.p1_z.get()))
         p2 = P(x=float(self.p2_x.get()), y=float(self.p2_y.get()), z=float(self.p2_z.get()))
-        self.canvas.create_line(p1.x, p1.y, p2.x, p2.y)
 
         self.figure.rotationL(p1=p1, p2=p2, angle=angle)
         self.plot_figure()
@@ -196,8 +283,22 @@ class Gui:
         """
         Масштабирование
         """
-        scale = float(self.scale_input.get())
-        self.figure.scaleC(xscale=scale, yscale=scale, zscale=scale)
+        # scale = float(self.scale_input.get())
+        # self.figure.scaleC(xscale=scale, yscale=scale, zscale=scale)
+        # self.plot_figure()
+
+        self.figure = self.figure.scaleC(xscale=float(self.scale_x.get()),
+                                         yscale=float(self.scale_y.get()),
+                                         zscale=float(self.scale_z.get()))
+        self.plot_figure()
+
+    def shift_action(self):
+        """
+        Сдвиг
+        """
+        self.figure = self.figure.shift(xshift=float(self.shift_x.get()),
+                                        yshift=float(self.shift_y.get()),
+                                        zshift=float(self.shift_z.get()))
         self.plot_figure()
 
     def clear_window(self):
@@ -221,7 +322,6 @@ class Gui:
                 self.canvas.create_line(p1.x, -p1.z + 250, p2.x, -p2.z + 250)
             elif self.xyz == 2:
                 self.canvas.create_line(p1.x, -p1.y + 500, p2.x, -p2.y + 500)
-
 
     def left_button_release(self, event):
         """
