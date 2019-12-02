@@ -452,6 +452,81 @@ class Func(N_edge):
         self._center = P((x1 - x0) / 2, (y1 - y0) / 2, (max1 - min1) / 2)
 
 
+def normalize(p1, p2):
+    if (p2.z < p1.z or (p2.z == p1.z and p2.y < p1.y) or (p2.z == p1.z and p2.y == p1.y) and p2.x < p1.x):
+        tmp = p1
+        p1 = p2
+        p2 = tmp
+    x = p2.x - p1.x
+    y = p2.y - p1.y
+    z = p2.z - p1.z
+    d = np.sqrt(x * x + y * y + z * z)
+    if d != 0:
+        return P(x=x / d, y=y / d, z=z / d)
+    return P(0, 0, 0)
+
+
+class RotationFigure(N_edge):
+
+    def __init__(self, *points, partitions, key=1):
+        self._points = []
+        self._edges = []
+
+        count_points = len(points[0])
+        print('count_points = ', count_points)
+
+        for point in points[0]:
+            self._points.append(P(x=point[0], y=point[1], z=point[2]))
+
+        for i in range(len(self._points) - 1):
+            self._edges.append([i, i + 1])
+
+        rot = 360 / partitions
+
+        self._worldcoor = False
+        self._center = P()
+
+        our_points = self._points
+        our_edges = self._edges
+
+        shift_union = 0
+        angle = rot
+        state = 0
+        for new_p in range(1, partitions):
+            print('angle: ', angle)
+            self.rotation(angle, key)
+            state = new_p * len(self._points)
+
+            self._edges = list()
+            for i in range(len(self._points) - 1):
+                self._edges.append([i + state, i + state + 1])
+
+            # for i in range(len(self._points)):
+            #     self._edges.append([i + shift_union, i + state])
+
+            shift_union += len(self._points)
+            our_points += self._points
+            our_edges += self._edges
+            angle += rot
+
+        # соединяем точки по горизонтали
+        for i in range(count_points + count_points * 2):
+            our_edges.append([i, i + count_points])
+
+        # соединяем первые точки с последними
+        for i in range(count_points):
+            our_edges += [[i, i + state]]
+
+        self._points = our_points
+        self._edges = our_edges
+
+        # self._points = [P(0, 100, 40), P(20, 60, 70), P(0, 30, 50), P(0, 10, 50),
+        #                 P(-40.0, 100.0, 2.4492935982947065e-15), P(-70.0, 60.0, 20.000000000000004),
+        #                 P(-50.0, 30.0, 3.061616997868383e-15), P(-50.0, 10.0, 3.061616997868383e-15)],
+
+        # self._edges = [[0, 1], [1, 2], [2, 3], [4, 5], [5, 6], [6, 7], [0, 4], [1, 5], [2, 6], [3, 7]]
+
+
 # Класс додекаэдр (12-гранник) dodecahedron
 def main():
     f = Func(f=lambda x, y: x + y, x0=1, x1=2, y0=1, y1=2, step=0.5)

@@ -32,7 +32,8 @@ class Gui:
             "Октаэдр",
             "Икосаэдр",
             "Додекаэдр",
-            "Функция"
+            "Функция",
+            'Фигура вращения'
         ]
         self.label1 = ttk.Label(self.window, text='Фигура:                ')
         self.label1.grid(row=1, column=1)
@@ -313,6 +314,10 @@ class Gui:
         """
         self.clear_window()
         pnts, edgs = self.figure.projection(tp=self.proection, key=self.xyz)
+
+        # for x in pnts:
+        #     print(x)
+
         for e in edgs:
             p1 = pnts[e[0]]
             p2 = pnts[e[1]]
@@ -339,9 +344,11 @@ class Gui:
         elif self.what_figure.get() == "Додекаэдр":
             self.figure = Dodecahedron()
         elif self.what_figure.get() == "Функция":
-                self.figure = Func(f=lambda x, y: np.sin((x + y) * 3), x0=0, x1=1, y0=0, y1=1, step = 0.1)
+                self.figure = Func(f=lambda x, y: np.sin((x + y) * 3), x0=0, x1=1, y0=0, y1=1, step=0.1)
                 # np.sin((x + y) * 3)
                 # (x + y)
+        elif self.what_figure.get() == "Фигура вращения":
+            self.figure = RotationFigure([[0, 100, 40], [20, 60, 70]], partitions=4, key=1) # [[0, 100, 40], [20, 60, 70], [0, 30, 50], [0, 10, 50]]
 
         tp = 0
         if self.what_proection.get() == 'Перспективная':
@@ -361,7 +368,7 @@ class Gui:
 
         self.proection = tp
         self.xyz = key
-        self.figure.setcenter(250, 250, 0) #.rotationXYZ(20, 60, 60)
+        self.figure.setcenter(250, 250, 0)  # .rotationXYZ(20, 60, 60)
         self.plot_figure()
 
 
