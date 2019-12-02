@@ -67,7 +67,7 @@ class N_edge(object):
         # Множество ребер многогранника
         self._edges = edges
         # Находится ли центр в точке (0, 0, 0). Влияет на то, нужны ли сдвиги пространства
-        # в центр многогранника во некоторых время преобразований
+        # в центр многогранника в некоторых время преобразований
         self._worldcoor = worldcoor
         if self._points != []:
             self.center()
@@ -468,18 +468,16 @@ def normalize(p1, p2):
 
 class RotationFigure(N_edge):
 
-    def __init__(self, *points, partitions, key=1):
+    def __init__(self, points, partitions, key=1):
         self._points = []
         self._edges = []
 
-        count_points = len(points[0])
-        print('count_points = ', count_points)
-
-        for point in points[0]:
+        size = len(points)
+        for point in points:
             self._points.append(P(x=point[0], y=point[1], z=point[2]))
 
         # соединяем грани для первой кривой
-        for i in range(len(self._points) - 1):
+        for i in range(size - 1):
             self._edges.append([i, i + 1])
 
         rot = 360 / partitions
@@ -490,33 +488,94 @@ class RotationFigure(N_edge):
         our_points = self._points
         our_edges = self._edges
 
-        angle = rot
-        state = 0
-        for new_p in range(1, partitions):
-            print('angle: ', angle)
-            self.rotation(angle, key)
-            state = new_p * len(self._points)
+        for j in range(1, partitions):
+            print('angle: ', rot * j)
+            self.rotation(rot * j, key)
+
+            state = (j - 1) * size
+
+            for i in range(size):
+                our_edges.append([i + state, (i + state + size) % partitions * size])
+
+            state = j * size
 
             # соединяем грани для последующих кривых
-            self._edges = list()
-            for i in range(len(self._points) - 1):
-                self._edges.append([i + state, i + state + 1])
+            self._edges = []
+            for i in range(size - 1):
+                our_edges.append([i + state, i + state + 1])
 
             our_points += self._points
-            our_edges += self._edges
-            angle += rot
+            state += size
 
         # соединяем точки по горизонтали
-        for i in range(count_points + count_points * 2):
-            our_edges.append([i, i + count_points])
+        #for i in range(partitions):
+         #   for j in range(size):
+         #       our_edges.append([(size * i + j) % len(our_points), (size * i + j + 1) % len(our_points)])
 
         # соединяем точки первой кривой с точками последней кривой
-        for i in range(count_points):
-            our_edges += [[i, i + state]]
+        #for i in range(count_points):
+        #    our_edges += [[i, i + state]]
 
         self._points = our_points
         self._edges = our_edges
+        print(self._points)
 
+        # self._points = [P(0, 100, 40), P(20, 60, 70), P(0, 30, 50), P(0, 10, 50),
+        #                 P(-40.0, 100.0, 2.4492935982947065e-15), P(-70.0, 60.0, 20.000000000000004),
+        #                 P(-50.0, 30.0, 3.061616997868383e-15), P(-50.0, 10.0, 3.061616997868383e-15)],
+
+        # self._edges = [[0, 1], [1, 2], [2, 3], [4, 5], [5, 6], [6, 7], [0, 4], [1, 5], [2, 6], [3, 7]]
+
+# class RotationFigure2(N_edge):
+#
+#     def __init__(self, *points, partitions, key=1):
+#         self._points = []
+#         self._edges = []
+#
+#         count_points = len(points[0])
+#         for point in points[0]:
+#             self._points.append(P(x=point[0], y=point[1], z=point[2]))
+#
+#         # соединяем грани для первой кривой
+#         for i in range(len(self._points) - 1):
+#             self._edges.append([i, i + 1])
+#
+#         rot = 360 / partitions
+#
+#         self._worldcoor = False
+#         self._center = P()
+#
+#         our_points = self._points
+#         our_edges = self._edges
+#
+#         angle = rot
+#         state = len(self._points)
+#         for new_p in range(1, partitions):
+#             print('angle: ', angle)
+#             self.rotation(angle, key)
+#             state = new_p * len(self._points)
+#
+#             # соединяем грани для последующих кривых
+#             self._edges = list()
+#             for i in range(len(self._points) - 1):
+#                 self._edges.append([i + state, i + state + 1])
+#
+#             our_points += self._points
+#             our_edges += self._edges
+#             angle += rot
+#             state += len(self._points)
+#
+#         # соединяем точки по горизонтали
+#         #for i in range(count_points + count_points * 2):
+#         #    our_edges.append([i, i + count_points])
+#
+#         # соединяем точки первой кривой с точками последней кривой
+#         #for i in range(count_points):
+#         #    our_edges += [[i, i + state]]
+#
+#         self._points = our_points[:2]
+#         self._edges = our_edges
+#         print(self._points)
         # self._points = [P(0, 100, 40), P(20, 60, 70), P(0, 30, 50), P(0, 10, 50),
         #                 P(-40.0, 100.0, 2.4492935982947065e-15), P(-70.0, 60.0, 20.000000000000004),
         #                 P(-50.0, 30.0, 3.061616997868383e-15), P(-50.0, 10.0, 3.061616997868383e-15)],

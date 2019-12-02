@@ -206,7 +206,7 @@ class Gui:
         self.what_xyz.set(self.OPTIONS_xyz[1])
         self.what_proection.set(self.OPTIONS_proection[1])
         self.angle_input.delete(0, END)
-        self.angle_input.insert(0, "180")
+        self.angle_input.insert(0, "45")
         self.what_rotate.set(self.OPTIONS_rotate[1])
         self.what_xyz_reflection.set(self.OPTIONS_xyz_reflection[1])
 
@@ -277,6 +277,7 @@ class Gui:
             key = 1
         elif self.what_xyz_reflection.get() == 'yz':
             key = 2
+        print(key)
         self.figure.reflection(key=key)
         self.plot_figure()
 
@@ -315,9 +316,6 @@ class Gui:
         self.clear_window()
         pnts, edgs = self.figure.projection(tp=self.proection, key=self.xyz)
 
-        # for x in pnts:
-        #     print(x)
-
         for e in edgs:
             p1 = pnts[e[0]]
             p2 = pnts[e[1]]
@@ -348,7 +346,7 @@ class Gui:
                 # np.sin((x + y) * 3)
                 # (x + y)
         elif self.what_figure.get() == "Фигура вращения":
-            self.figure = RotationFigure([[0, 100, 40], [20, 60, 70]], partitions=4, key=1) # [[0, 100, 40], [20, 60, 70], [0, 30, 50], [0, 10, 50]]
+            self.figure = RotationFigure([[0, 100, 0], [0, 100, 100]], partitions=4, key=2) # [[0, 100, 40], [20, 60, 70], [0, 30, 50], [0, 10, 50]]
 
         tp = 0
         if self.what_proection.get() == 'Перспективная':
