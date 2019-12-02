@@ -478,6 +478,7 @@ class RotationFigure(N_edge):
         for point in points[0]:
             self._points.append(P(x=point[0], y=point[1], z=point[2]))
 
+        # соединяем грани для первой кривой
         for i in range(len(self._points) - 1):
             self._edges.append([i, i + 1])
 
@@ -489,7 +490,6 @@ class RotationFigure(N_edge):
         our_points = self._points
         our_edges = self._edges
 
-        shift_union = 0
         angle = rot
         state = 0
         for new_p in range(1, partitions):
@@ -497,14 +497,11 @@ class RotationFigure(N_edge):
             self.rotation(angle, key)
             state = new_p * len(self._points)
 
+            # соединяем грани для последующих кривых
             self._edges = list()
             for i in range(len(self._points) - 1):
                 self._edges.append([i + state, i + state + 1])
 
-            # for i in range(len(self._points)):
-            #     self._edges.append([i + shift_union, i + state])
-
-            shift_union += len(self._points)
             our_points += self._points
             our_edges += self._edges
             angle += rot
@@ -513,7 +510,7 @@ class RotationFigure(N_edge):
         for i in range(count_points + count_points * 2):
             our_edges.append([i, i + count_points])
 
-        # соединяем первые точки с последними
+        # соединяем точки первой кривой с точками последней кривой
         for i in range(count_points):
             our_edges += [[i, i + state]]
 
