@@ -72,6 +72,8 @@ class N_edge(object):
         if self._points != []:
             c = self.center()
         if c == P():
+            worldcoor = False
+        else:
             worldcoor = True
         self._worldcoor = worldcoor
 
@@ -89,7 +91,6 @@ class N_edge(object):
     ...
     True/False - находится ли центр в (0, 0, 0) (False - находится)
     '''
-
     def fileread(self, filename):
         self._points = []
         self._edges = []
@@ -138,12 +139,16 @@ class N_edge(object):
         for p in self._points:
             newpoints.append(p + addp)
         self._points = newpoints
-        self.center()
-        self._worldcoor = True
+        c = self.center()
+        if c == P():
+            self._worldcoor = False
+        else:
+            self._worldcoor = True
         return self
 
     # Устанавливает центр в точке (0, 0, 0)
-    '''def returnCtoZ(self):
+    '''
+    def returnCtoZ(self):
         x = self._center.x
         y = self._center.y
         z = self._center.z
@@ -154,7 +159,7 @@ class N_edge(object):
         self._points = newpoints
         self.center()
         self._worldcoor = False
-'''
+    '''
     # Проецирование фигуры тремя способами
     # tp = 0 (ортографическое), 1 (изометрическое), 2 (перспективное)
     # key = 0 (на yz), 1 (на xz), 2 (на xy) ДЛЯ ОРТОГРАФИЧЕСКИХ
@@ -185,6 +190,8 @@ class N_edge(object):
         flag = self._worldcoor
 
         if (flag):
+            print('1',self._worldcoor)
+            print(self.center())
             self.setcenter()
 
         newpoints = []
@@ -198,11 +205,16 @@ class N_edge(object):
             mulmatr = per
 
         for p in self._points:
-            newp = np.matmul([p.x, p.y, p.z, 1], mulmatr)
+            newp = np.matmul(mulmatr, [p.x, p.y, p.z, 1])
             newpoints.append(P(newp[0], newp[1], newp[2]) + P(x, y, z))
 
         if (flag):
+            print('2',self._worldcoor)
+            print(self.center())
             self.setcenter(x, y, z)
+        print('3', self._worldcoor)
+        print(self.center())
+        print()
 
         return newpoints, self._edges
 
@@ -230,12 +242,12 @@ class N_edge(object):
 
         newpoints = []
         for p in self._points:
-            newp = np.matmul([p.x, p.y, p.z, 1], rot)
+            newp = np.matmul(rot, [p.x, p.y, p.z, 1])
             newpoints.append(P(newp[0], newp[1], newp[2]))
         self._points = newpoints
 
-        # if (flag):
-        #     self.setcenter(x, y, z)
+        if (flag):
+            self.setcenter(x, y, z)
         return self
 
     # Вращение по 3 заданным углам вокруг осей X, Y, Z соответственно
@@ -247,6 +259,7 @@ class N_edge(object):
 
     # Поворот вокруг линии, заданной 2-мя точками
     def rotationL(self, p1, p2, angle):
+        '''
         r = m.radians(angle)
         d1 = p1.x ** 2 + p1.y ** 2 + p1.z ** 2
         d2 = p2.x ** 2 + p2.y ** 2 + p2.z ** 2
@@ -257,12 +270,17 @@ class N_edge(object):
         else:
             pshift = p2 - p1
             pmin = p1
+        '''
+        #self.shift(-p1.x, -p1.y, -p1.z)
 
-        self.shift(-pmin.x, -pmin.y, -pmin.z)
-        norm = m.sqrt(pshift.x ** 2 + pshift.y ** 2 + pshift.z ** 2)
-        l = pshift.x / norm
-        h = pshift.y / norm
-        n = pshift.z / norm
+        r = m.radians(angle)
+        l = np.abs(p2.x - p1.x)
+        h = np.abs(p2.y - p1.y)
+        n = np.abs(p2.z - p1.z)
+        norm = m.sqrt(l ** 2 + h ** 2 + n ** 2)
+        l /= norm
+        h /= norm
+        n /= norm
 
         rot = [[l ** 2 + m.cos(r) * (1 - l ** 2), l * (1 - m.cos(r)) * h + n * m.sin(r),
                 l * (1 - m.cos(r)) * n - h * m.sin(r), 0],
@@ -277,7 +295,9 @@ class N_edge(object):
             newp = np.matmul([p.x, p.y, p.z, 1], rot)
             newpoints.append(P(newp[0], newp[1], newp[2]))
         self._points = newpoints
-        self.shift(pmin.x, pmin.y, pmin.z)
+        self._center = self.center()
+        #xn, yn, zn, _ = np.matmul(rot, [p1.x, p1.y, p1.z, 1])
+        # self.shift(xn, yn, zn)
 
         # x = self._center.x
         # y = self._center.y
@@ -327,11 +347,11 @@ class N_edge(object):
     # key = 0 (относительно xy), 1 (относительно xz), 2 (относительно yz).
     def reflection(self, key):
         refl = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
-        if key == 0:
+        if key == 2:
             refl[2][2] = -1
         elif key == 1:
             refl[1][1] = -1
-        elif key == 2:
+        elif key == 0:
             refl[0][0] = -1
 
         newpoints = []
@@ -482,53 +502,93 @@ class RotationFigure(N_edge):
         self._points = []
         self._edges = []
 
-        size = len(points)
+        count_points = len(points)
         for point in points:
             self._points.append(P(x=point[0], y=point[1], z=point[2]))
 
         # соединяем грани для первой кривой
-        for i in range(size - 1):
+        for i in range(count_points - 1):
             self._edges.append([i, i + 1])
 
-        rot = 360 / partitions
-
-        self._worldcoor = False
         self._center = P()
+        self._worldcoor = False
+
+        rot = 360 / partitions
 
         our_points = self._points
         our_edges = self._edges
 
         for j in range(1, partitions):
-            print('angle: ', rot * j)
-            self.rotation(rot * j, key)
-
-            state = (j - 1) * size
-
-            for i in range(size):
-                our_edges.append([i + state, (i + state + size) % partitions * size])
-
-            state = j * size
-
-            # соединяем грани для последующих кривых
-            self._edges = []
-            for i in range(size - 1):
-                our_edges.append([i + state, i + state + 1])
+            angle = rot * j
+            print('partitions:', partitions, '; angle:', angle)
+            self.rotation(angle, key)
 
             our_points += self._points
-            state += size
 
-        # соединяем точки по горизонтали
-        #for i in range(partitions):
-         #   for j in range(size):
-         #       our_edges.append([(size * i + j) % len(our_points), (size * i + j + 1) % len(our_points)])
-
-        # соединяем точки первой кривой с точками последней кривой
-        #for i in range(count_points):
-        #    our_edges += [[i, i + state]]
+            # соединяем грани для очередной кривой
+            for i in range(count_points - 1):
+                our_edges.append([i + j * count_points, i + j * count_points + 1])
 
         self._points = our_points
         self._edges = our_edges
-        print(self._points)
+        print(len(self._points))
+        print('points: ', self._points)
+        print('edges: ', self._edges)
+
+
+# class RotationFigure(N_edge):
+#
+#     def __init__(self, points, partitions, key=1):
+#         self._points = []
+#         self._edges = []
+#
+#         size = len(points)
+#         for point in points:
+#             self._points.append(P(x=point[0], y=point[1], z=point[2]))
+#
+#         # соединяем грани для первой кривой
+#         for i in range(size - 1):
+#             self._edges.append([i, i + 1])
+#
+#         rot = 360 / partitions
+#
+#         self._worldcoor = False
+#         self._center = P()
+#
+#         our_points = self._points
+#         our_edges = self._edges
+#
+#         for j in range(1, partitions):
+#             print('angle: ', rot * j)
+#             self.rotation(rot * j, key)
+#
+#             state = (j - 1) * size
+#
+#             for i in range(size):
+#                 our_edges.append([i + state, (i + state + size) % partitions * size])
+#
+#             state = j * size
+#
+#             # соединяем грани для последующих кривых
+#             self._edges = []
+#             for i in range(size - 1):
+#                 our_edges.append([i + state, i + state + 1])
+#
+#             our_points += self._points
+#             state += size
+#
+#         # соединяем точки по горизонтали
+#         #for i in range(partitions):
+#          #   for j in range(size):
+#          #       our_edges.append([(size * i + j) % len(our_points), (size * i + j + 1) % len(our_points)])
+#
+#         # соединяем точки первой кривой с точками последней кривой
+#         #for i in range(count_points):
+#         #    our_edges += [[i, i + state]]
+#
+#         self._points = our_points
+#         self._edges = our_edges
+#         print(self._points)
 
         # self._points = [P(0, 100, 40), P(20, 60, 70), P(0, 30, 50), P(0, 10, 50),
         #                 P(-40.0, 100.0, 2.4492935982947065e-15), P(-70.0, 60.0, 20.000000000000004),

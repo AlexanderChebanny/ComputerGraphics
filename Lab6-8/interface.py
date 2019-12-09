@@ -1,4 +1,4 @@
-from Lab_7.Task3.poly3d import *
+from poly3d import *
 from tkinter import *
 from tkinter import ttk
 
@@ -206,7 +206,7 @@ class Gui:
         self.what_xyz.set(self.OPTIONS_xyz[1])
         self.what_proection.set(self.OPTIONS_proection[1])
         self.angle_input.delete(0, END)
-        self.angle_input.insert(0, "45")
+        self.angle_input.insert(0, "10")
         self.what_rotate.set(self.OPTIONS_rotate[1])
         self.what_xyz_reflection.set(self.OPTIONS_xyz_reflection[1])
 
@@ -323,9 +323,9 @@ class Gui:
             height = self.CANVAS_HEIGHT / 2
             width = self.CANVAS_WIDTH / 2
             if self.xyz == 0:
-                self.canvas.create_line(p1.y, p1.z, p2.y, p2.z)
+                self.canvas.create_line(width + p1.y, height - p1.z, width + p2.y, height - p2.z)
             elif self.xyz == 1:
-                self.canvas.create_line(p1.x, p1.z, p2.x, p2.z)
+                self.canvas.create_line(width + p1.x, height - p1.z, width + p2.x, height - p2.z)
             elif self.xyz == 2:
                 self.canvas.create_line(width + p1.x, height - p1.y, width + p2.x, height - p2.y)
 
