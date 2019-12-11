@@ -327,14 +327,14 @@ class Gui:
             height = self.CANVAS_HEIGHT / 2
             width = self.CANVAS_WIDTH / 2
             if self.proection == 0:
-                    if self.xyz == 0:
-                        self.canvas.create_line(width + p1.y, height - p1.z, width + p2.y, height - p2.z)
-                    elif self.xyz == 1:
-                        self.canvas.create_line(width + p1.x, height - p1.z, width + p2.x, height - p2.z)
-                    elif self.xyz == 2:
-                        self.canvas.create_line(width + p1.x, height - p1.y, width + p2.x, height - p2.y)
+                if self.xyz == 0:
+                    self.canvas.create_line(width + p1.y, height - p1.z, width + p2.y, height - p2.z)
+                elif self.xyz == 1:
+                    self.canvas.create_line(width + p1.x, height - p1.z, width + p2.x, height - p2.z)
+                elif self.xyz == 2:
+                    self.canvas.create_line(width + p1.x, height - p1.y, width + p2.x, height - p2.y)
             elif self.proection == 1:
-                pass
+                self.canvas.create_line(width + p1.x, height - p1.y, width + p2.x, height - p2.y)
             elif self.proection == 2:
                 self.canvas.create_line((width + p1.x) / (height + p1.z) / (edge_width / 50000), (height - p1.y) / (height + p1.z) / (edge_width / 50000), 
                 (width + p1.x) / (height + p1.z) / (edge_width / 50000), (height - p1.y) / (height + p1.z) / (edge_width / 50000))
@@ -355,7 +355,7 @@ class Gui:
         elif self.what_figure.get() == "Додекаэдр":
             self.figure = Dodecahedron()
         elif self.what_figure.get() == "Функция":
-                self.figure = Func(f=lambda x, y: np.sin((x + y) * 3), x0=0, x1=1, y0=0, y1=1, step=0.1)
+                self.figure = Func(f=lambda x, y: np.sin((x + y) * 3), x0=-10, x1=10, y0=-10, y1=10, step=0.2)
                 # np.sin((x + y) * 3)
                 # (x + y)
         elif self.what_figure.get() == "Фигура вращения":
