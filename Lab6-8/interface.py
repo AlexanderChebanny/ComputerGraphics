@@ -355,11 +355,11 @@ class Gui:
         elif self.what_figure.get() == "Додекаэдр":
             self.figure = Dodecahedron()
         elif self.what_figure.get() == "Функция":
-                self.figure = Func(f=lambda x, y: np.sin((x + y) * 3), x0=-10, x1=10, y0=-10, y1=10, step=0.2)
+                self.figure = Func(f=lambda x, y: np.sin((x + y) * 3), x0=-5, x1=5, y0=-5, y1=5, step=0.2)
                 # np.sin((x + y) * 3)
                 # (x + y)
         elif self.what_figure.get() == "Фигура вращения":
-            self.figure = RotationFigure([[0, 100, 0], [0, 100, 100]], partitions=4, key=2) # [[0, 100, 40], [20, 60, 70], [0, 30, 50], [0, 10, 50]]
+            self.figure = RotationFigure([[100, 0, 50], [100, 0, 150]], partitions=4, key=2) # [[0, 100, 40], [20, 60, 70], [0, 30, 50], [0, 10, 50]]
 
         tp = 0
         if self.what_proection.get() == 'Перспективная':

@@ -498,7 +498,7 @@ def normalize(p1, p2):
 
 class RotationFigure(N_edge):
 
-    def __init__(self, points, partitions, key=1):
+    def __init__(self, points, partitions, key=2):
         self._points = []
         self._edges = []
 
@@ -510,30 +510,30 @@ class RotationFigure(N_edge):
         for i in range(count_points - 1):
             self._edges.append([i, i + 1])
 
-        self._center = P()
-        self._worldcoor = False
-
         rot = 360 / partitions
 
-        our_points = self._points
-        our_edges = self._edges
-
+        c = [0,0,0]
+        c[key] = sum([x[key] for x in points]) / count_points
+        self._center = P(x=c[0], y=c[1], z=c[2])
+        print(self._center)
+        self._worldcoor = self._center  != P()
+        print( self._worldcoor )
+        points = []
+        edges = []
+        points += self._points
+        edges += self._edges
+        
         for j in range(1, partitions):
-            angle = rot * j
-            print('partitions:', partitions, '; angle:', angle)
-            self.rotation(angle, key)
-
-            our_points += self._points
-
+            self.rotation(rot, key)
+            points += self._points
             # соединяем грани для очередной кривой
             for i in range(count_points - 1):
-                our_edges.append([i + j * count_points, i + j * count_points + 1])
-
-        self._points = our_points
-        self._edges = our_edges
-        print(len(self._points))
-        print('points: ', self._points)
-        print('edges: ', self._edges)
+                edges.append([i + j * count_points, i + j * count_points + 1])
+        
+        self._points = points
+        self._edges = edges
+        #self._center = self.center()
+        #self._worldcoor = self._center  != P()
 
 
 # class RotationFigure(N_edge):
