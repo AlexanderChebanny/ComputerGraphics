@@ -211,9 +211,9 @@ class Gui:
         self.what_xyz_reflection.set(self.OPTIONS_xyz_reflection[1])
 
         self.shift_x.delete(0, END)
-        self.shift_x.insert(0, "0")
+        self.shift_x.insert(0, "50")
         self.shift_y.delete(0, END)
-        self.shift_y.insert(0, "0")
+        self.shift_y.insert(0, "50")
         self.shift_z.delete(0, END)
         self.shift_z.insert(0, "0")
 
@@ -316,18 +316,28 @@ class Gui:
         self.clear_window()
         # self.figure.setcenter(self.CANVAS_WIDTH / 2, self.CANVAS_WIDTH / 2, self.CANVAS_WIDTH / 2)
         pnts, edgs = self.figure.projection(tp=self.proection, key=self.xyz)
-
+        edge_width = 50
+        if len(edgs) >= 2:
+            p1 = pnts[edgs[0][0]]
+            p2 = pnts[edgs[0][1]]
+            edge_width = np.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2 + (p1.z - p2.z) ** 2)
         for e in edgs:
             p1 = pnts[e[0]]
             p2 = pnts[e[1]]
             height = self.CANVAS_HEIGHT / 2
             width = self.CANVAS_WIDTH / 2
-            if self.xyz == 0:
-                self.canvas.create_line(width + p1.y, height - p1.z, width + p2.y, height - p2.z)
-            elif self.xyz == 1:
-                self.canvas.create_line(width + p1.x, height - p1.z, width + p2.x, height - p2.z)
-            elif self.xyz == 2:
-                self.canvas.create_line(width + p1.x, height - p1.y, width + p2.x, height - p2.y)
+            if self.proection == 0:
+                    if self.xyz == 0:
+                        self.canvas.create_line(width + p1.y, height - p1.z, width + p2.y, height - p2.z)
+                    elif self.xyz == 1:
+                        self.canvas.create_line(width + p1.x, height - p1.z, width + p2.x, height - p2.z)
+                    elif self.xyz == 2:
+                        self.canvas.create_line(width + p1.x, height - p1.y, width + p2.x, height - p2.y)
+            elif self.proection == 1:
+                pass
+            elif self.proection == 2:
+                self.canvas.create_line((width + p1.x) / (height + p1.z) / (edge_width / 50000), (height - p1.y) / (height + p1.z) / (edge_width / 50000), 
+                (width + p1.x) / (height + p1.z) / (edge_width / 50000), (height - p1.y) / (height + p1.z) / (edge_width / 50000))
 
     def left_button_release(self, event):
         """

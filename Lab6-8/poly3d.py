@@ -4,7 +4,6 @@ import numpy as np
 #   Константы
 EPS = 0.000001
 
-
 # Класс точка
 class P(object):
 
@@ -32,7 +31,7 @@ class P(object):
             return "Dividing by zero"
 
     def __eq__(self, p):
-        return (self.x - p.x) < EPS and (self.y - p.y) < EPS and (self.z - p.z) < EPS
+        return np.abs(self.x - p.x) < EPS and np.abs(self.y - p.y) < EPS and np.abs(self.z - p.z) < EPS
 
     def __ne__(self, p):
         return not self == p
@@ -68,7 +67,8 @@ class N_edge(object):
         self._edges = edges
         # Находится ли центр в точке (0, 0, 0). Влияет на то, нужны ли сдвиги пространства
         # в центр многогранника в некоторых время преобразований
-
+        self.edge_width
+        
         if self._points != []:
             c = self.center()
         if c == P():
@@ -172,10 +172,7 @@ class N_edge(object):
                [1 / m.sqrt(3), -1 / m.sqrt(3), 1 / m.sqrt(3), 0],
                [0, 0, 0, 1]]
 
-        per = [[m.sqrt(0.5), 0, -m.sqrt(0.5), 0],
-               [1 / m.sqrt(6), 2 / m.sqrt(6), 1 / m.sqrt(6), 0],
-               [1 / m.sqrt(3), -1 / m.sqrt(3), 1 / m.sqrt(3), 0],
-               [0, 0, 0, 1]]
+        per =  [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
 
         if key == 0:
             orth[0][0] = 0
@@ -192,6 +189,7 @@ class N_edge(object):
         if (flag):
             print('1',self._worldcoor)
             print(self.center())
+            print(self._center)
             self.setcenter()
 
         newpoints = []
@@ -212,6 +210,7 @@ class N_edge(object):
             print('2',self._worldcoor)
             print(self.center())
             self.setcenter(x, y, z)
+            
         print('3', self._worldcoor)
         print(self.center())
         print()
@@ -347,11 +346,11 @@ class N_edge(object):
     # key = 0 (относительно xy), 1 (относительно xz), 2 (относительно yz).
     def reflection(self, key):
         refl = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
-        if key == 2:
+        if key == 0:
             refl[2][2] = -1
         elif key == 1:
             refl[1][1] = -1
-        elif key == 0:
+        elif key == 2:
             refl[0][0] = -1
 
         newpoints = []
@@ -359,11 +358,12 @@ class N_edge(object):
             pbas = p
             pend = 0
             if (self._worldcoor):
-                pbas = p - self._center
-                pend = self._center
-            newp = np.matmul(refl, [pbas.x, pbas.y, pbas.z, 1])
-            newpoints.append(P(newp[0], newp[1], newp[2]) + pend)
+                pbas = p # - self._center
+                #pend = self._center
+            newp = np.matmul(refl, [p.x, p.y, p.z, 1])
+            newpoints.append(P(newp[0], newp[1], newp[2]) )
         self._points = newpoints
+        self._center = self.center()
         return self
 
 
