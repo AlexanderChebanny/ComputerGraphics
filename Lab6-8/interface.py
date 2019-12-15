@@ -294,28 +294,29 @@ class Gui:
         """
         self.clear_window()
         # self.figure.setcenter(self.CANVAS_WIDTH / 2, self.CANVAS_WIDTH / 2, self.CANVAS_WIDTH / 2)
+        height = self.CANVAS_HEIGHT / 2
+        width = self.CANVAS_WIDTH / 2
         pnts, edgs = self.figure.projection(tp=self.proection, key=self.xyz)
-        edge_width = 50
-        self.canvas.create_line(0, self.CANVAS_HEIGHT / 2, self.CANVAS_WIDTH, self.CANVAS_HEIGHT / 2, fill='#0000CC')
-        self.canvas.create_line( self.CANVAS_WIDTH / 2, self.CANVAS_HEIGHT, self.CANVAS_WIDTH / 2, 0, fill='blue')
-        if len(edgs) >= 2:
-            p1 = pnts[edgs[0][0]]
-            p2 = pnts[edgs[0][1]]
-            edge_width = np.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2 + (p1.z - p2.z) ** 2)
-            edge_width = 50000
+        #edge_width = 50
+        #self.canvas.create_line(0, self.CANVAS_HEIGHT / 2, self.CANVAS_WIDTH, self.CANVAS_HEIGHT / 2, fill='#0000CC')
+        #self.canvas.create_line( self.CANVAS_WIDTH / 2, self.CANVAS_HEIGHT, self.CANVAS_WIDTH / 2, 0, fill='blue')
+        #if len(edgs) >= 2:
+            #p1 = pnts[edgs[0][0]]
+            #p2 = pnts[edgs[0][1]]
+            #edge_width = np.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2 + (p1.z - p2.z) ** 2)
+            #edge_width = 50000
         camera_dist = float(self.dist_z.get())
-        c = pnts[0]
+        nearest_point = pnts[0]
         for p in pnts:
-            if p.z > c.z:
-                c = p
-        norm = dist(p, P(0, 0, camera_dist))
+            if p.z > nearest_point.z:
+                nearest_point = p
+        camera_point = P(0, 0, camera_dist)
+        norm = dist(nearest_point, camera_point)
         for e in edgs:
             p1 = pnts[e[0]]
-            p1_d = dist(p1, P(0, 0, camera_dist)) / norm
+            p1_scale = dist(p1, camera_point) / norm
             p2 = pnts[e[1]]
-            p2_d = dist(p1, P(0, 0, camera_dist)) / norm
-            height = self.CANVAS_HEIGHT / 2
-            width = self.CANVAS_WIDTH / 2
+            p2_scale = dist(p2, camera_point) / norm
             if self.proection == 0:
                 if self.xyz == 0:
                     self.canvas.create_line(width + p1.y, height - p1.z, width + p2.y, height - p2.z)
@@ -326,7 +327,7 @@ class Gui:
             elif self.proection == 1:
                 self.canvas.create_line(width + p1.x, height - p1.y, width + p2.x, height - p2.y)
             elif self.proection == 2:
-                self.canvas.create_line(width + p1.x / p1_d, height - p1.y / p1_d, width + p2.x / p2_d, height - p2.y / p2_d)
+                self.canvas.create_line(width + p1.x / p1_scale, height - p1.y / p1_scale, width + p2.x / p2_scale, height - p2.y / p2_scale)
 
     def left_button_release(self, event):
         """
