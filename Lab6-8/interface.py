@@ -314,9 +314,9 @@ class Gui:
         norm = dist(nearest_point, camera_point)
         for e in edgs:
             p1 = pnts[e[0]]
-            p1_scale = dist(p1, camera_point) / norm
+            p1_scale = dist(p1, camera_point) / self.figure.norm # norm
             p2 = pnts[e[1]]
-            p2_scale = dist(p2, camera_point) / norm
+            p2_scale = dist(p2, camera_point) / self.figure.norm # norm
             if self.proection == 0:
                 if self.xyz == 0:
                     self.canvas.create_line(width + p1.y, height - p1.z, width + p2.y, height - p2.z)
@@ -333,24 +333,26 @@ class Gui:
         """
         Установка фигуры по левому нажатию мыши
         """
-        self.figure = Tetrahedron()
+        camera_dist = float(self.dist_z.get())
+        camera_point = P(0, 0, camera_dist)
+        self.figure = Tetrahedron(camera_point)
         if self.what_figure.get() == "Тетраэдр":
-            self.figure = Tetrahedron()
+            self.figure = Tetrahedron(camera_point)
         elif self.what_figure.get() == "Гексаэдр":
-            self.figure = Hexahedron()
+            self.figure = Hexahedron(camera_point)
         elif self.what_figure.get() == "Октаэдр":
-            self.figure = Octahedron()
+            self.figure = Octahedron(camera_point)
         elif self.what_figure.get() == "Икосаэдр":
-            self.figure = Icosahedron()
+            self.figure = Icosahedron(camera_point)
         elif self.what_figure.get() == "Додекаэдр":
-            self.figure = Dodecahedron()
+            self.figure = Dodecahedron(camera_point)
         elif self.what_figure.get() == "Функция":
-                self.figure = Func(f=lambda x, y: np.sin((x + y) * 3), x0=0, x1=5, y0=0, y1=5, step=0.2)
+                self.figure = Func(camera_point=camera_point, f=lambda x, y: np.sin((x + y) * 3), x0=0, x1=5, y0=0, y1=5, step=0.2)
                 print(self.figure._points)
                 # np.sin((x + y) * 3)
                 # (x + y)
         elif self.what_figure.get() == "Фигура вращения":
-            self.figure = RotationFigure([[100, 0, 0], [25, 0, 100]], partitions=7, key=2) # [[0, 100, 40], [20, 60, 70], [0, 30, 50], [0, 10, 50]]
+            self.figure = RotationFigure(camera_point=camera_point, points=[[100, 0, 0], [25, 0, 100]], partitions=7, key=2) # [[0, 100, 40], [20, 60, 70], [0, 30, 50], [0, 10, 50]]
         
         tp = 0
         if self.what_proection.get() == 'Перспективная':

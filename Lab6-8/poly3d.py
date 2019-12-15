@@ -59,7 +59,7 @@ class L(object):
 class N_edge(object):
 
     # Конструктор
-    def __init__(self, points=[], edges=[], worldcoor=False):
+    def __init__(self, points=[], edges=[], camera_point=P(0, 0, 200), worldcoor=False):
 
         # Множество точек многогранника
         self._points = points
@@ -77,6 +77,7 @@ class N_edge(object):
         else:
             worldcoor = True
         self._worldcoor = worldcoor
+        self.norm = dist(camera_point, self.center)
 
     # Возвращает тип координат
     def typecoor(self):
@@ -350,7 +351,7 @@ class N_edge(object):
 # Класс тетраэдр (пирамида)
 class Tetrahedron(N_edge):
 
-    def __init__(self, scale=50):
+    def __init__(self, camera_point, scale=50):
         self._center = P()
         self._worldcoor = False
         self._points = [P(m.sqrt(8 / 9), 0, -1 / 3), P(-m.sqrt(2 / 9), m.sqrt(2 / 3), -1 / 3),
@@ -359,12 +360,12 @@ class Tetrahedron(N_edge):
         self._psize = 4
         self._esize = 6
         self = self.scaleC(scale, scale, scale)
-
+        self.norm = dist(self._center, camera_point)
 
 # Класс гексаэдр (куб)
 class Hexahedron(N_edge):
 
-    def __init__(self, scale=50):
+    def __init__(self, camera_point, scale=100):
         self._center = P()
         self._worldcoor = False
         self._points = [P(1, 1, -1), P(1, -1, -1), P(1, -1, 1), P(1, 1, 1), P(-1, 1, -1),
@@ -372,24 +373,24 @@ class Hexahedron(N_edge):
         self._edges = [[0, 1], [0, 4], [0, 3], [1, 2], [1, 5], [2, 3], [2, 6],
                        [3, 7], [4, 5], [4, 7], [5, 6], [6, 7]]
         self = self.scaleC(scale, scale, scale)
-
+        self.norm = dist(self._center, camera_point)
 
 # Класс октаэдр (восьмигранник)
 class Octahedron(N_edge):
 
-    def __init__(self, scale=50):
+    def __init__(self, camera_point, scale=50):
         self._center = P()
         self._worldcoor = False
         self._points = [P(1, 0, 0), P(0, -1, 0), P(0, 1, 0), P(0, 0, -1), P(0, 0, 1), P(-1, 0, 0)]
         self._edges = [[0, 1], [0, 2], [0, 3], [0, 4], [1, 3], [1, 4],
                        [1, 5], [2, 3], [2, 4], [2, 5], [3, 5], [4, 5]]
         self = self.scaleC(scale, scale, scale)
-
+        self.norm = dist(self._center, camera_point)
 
 # Класс икосаэдр (20-гранник)
 class Icosahedron(N_edge):
 
-    def __init__(self, scale=50):
+    def __init__(self, camera_point, scale=50):
         self._center = P()
         self._worldcoor = False
         r = (1 + m.sqrt(5)) / 2
@@ -408,12 +409,12 @@ class Icosahedron(N_edge):
                        [9, 10], [9, 11],
                        [10, 11]]
         self = self.scaleC(scale, scale, scale)
-
+        self.norm = dist(self._center, camera_point)
 
 # Класс додекаэдр (12-гранник)
 class Dodecahedron(N_edge):
 
-    def __init__(self, scale=50):
+    def __init__(self, camera_point, scale=50):
         self._center = P()
         self._worldcoor = False
         r = (3 + m.sqrt(5)) / 2
@@ -431,12 +432,13 @@ class Dodecahedron(N_edge):
                        [11, 17], [12, 13], [12, 18], [13, 14], [13, 15],
                        [14, 19], [15, 16], [15, 17], [16, 18], [17, 19]]
         self = self.scaleC(scale, scale, scale)
-         
+        self.norm = dist(self._center, camera_point)
+
 
 # Груфик функции двух переменных
 class Func(N_edge):
 
-    def __init__(self, f, x0, x1, y0, y1, step = 0.1):
+    def __init__(self, camera_point, f, x0, x1, y0, y1, step = 0.1):
         max1 = min1 = f(x0, y0)
         self._points = []
         self._edges = []
@@ -464,7 +466,7 @@ class Func(N_edge):
             self._worldcoor = True
         else:
             self._worldcoor == False
-
+        self.norm = dist(self._center, camera_point)
 
 def normalize(p1, p2):
     if (p2.z < p1.z or (p2.z == p1.z and p2.y < p1.y) or (p2.z == p1.z and p2.y == p1.y) and p2.x < p1.x):
@@ -507,7 +509,7 @@ class RotationFigure(N_edge):
                 self.setcenter(x, y, z)
             return newpoints
         
-    def __init__(self, points, partitions, key=2):
+    def __init__(self, camera_point, points, partitions, key=2):
         self._points = []
         self._edges = []
         
@@ -553,7 +555,7 @@ class RotationFigure(N_edge):
         self._edges = edges
         print(self._points)
         #self._worldcoor = self._center  != P()
-
+        self.norm = dist(self._center, camera_point)
 
 # class RotationFigure(N_edge):
 #
