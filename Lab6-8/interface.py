@@ -1,11 +1,12 @@
 from poly3d import *
+#from lib import *
 from tkinter import *
 from tkinter import ttk
 
 
 class Gui:
-    CANVAS_WIDTH = 500
-    CANVAS_HEIGHT = 500
+    CANVAS_WIDTH = 750
+    CANVAS_HEIGHT = 750
     
     def __init__(self):
         self.window = Tk()
@@ -108,13 +109,13 @@ class Gui:
         self.label6.grid(row=4, column=4)
         self.p2_x = Entry(self.window, width=5)
         self.p2_x.grid(row=4, column=5)
-        self.p2_x.insert(0, "0")
+        self.p2_x.insert(0, "1")
         self.p2_y = Entry(self.window, width=5)
         self.p2_y.grid(row=4, column=6)
-        self.p2_y.insert(0, "0")
+        self.p2_y.insert(0, "1")
         self.p2_z = Entry(self.window, width=5)
         self.p2_z.grid(row=4, column=7)
-        self.p2_z.insert(0, "0")
+        self.p2_z.insert(0, "1")
 
         # ОТРАЖЕНИЕ
         self.reflection_button = ttk.Button(self.window, text='Отражение', command=self.reflection_action)
@@ -177,22 +178,10 @@ class Gui:
         self.scale_z = Entry(self.window, width=5)
         self.scale_z.grid(row=9, column=9)
 
-        # ttk.Label(self.window, text="Scale: ").grid(row=10, column=3)
-        #
-        # self.label10 = ttk.Label(self.window, text='X: ')
-        # self.label10.grid(row=10, column=4)
-        # self.scale_x = Entry(self.window, width=5)
-        # self.scale_x.grid(row=10, column=5)
-        #
-        # self.label11 = ttk.Label(self.window, text='Y: ')
-        # self.label11.grid(row=10, column=6)
-        # self.scale_y = Entry(self.window, width=5)
-        # self.scale_y.grid(row=10, column=7)
-        #
-        # self.label12 = ttk.Label(self.window, text='Z: ')
-        # self.label12.grid(row=10, column=8)
-        # self.scale_z = Entry(self.window, width=5)
-        # self.scale_z.grid(row=10, column=9)
+        self.label13 = ttk.Label(self.window, text='Camera dist:')
+        self.label13.grid(row=4, column=8)
+        self.dist_z = Entry(self.window, width=5)
+        self.dist_z.grid(row=4, column=9)
 
         self.set_default_values()
         self.window.mainloop()
@@ -218,25 +207,13 @@ class Gui:
         self.shift_z.insert(0, "0")
 
         self.scale_x.delete(0, END)
-        self.scale_x.insert(0, "1")
+        self.scale_x.insert(0, "2")
         self.scale_y.delete(0, END)
-        self.scale_y.insert(0, "1")
+        self.scale_y.insert(0, "2")
         self.scale_z.delete(0, END)
-        self.scale_z.insert(0, "1")
-
-        # self.p1_x.delete(0, END)
-        # self.p1_x.insert(0, "0")
-        # self.p1_y.delete(0, END)
-        # self.p1_y.insert(0, "0")
-        # self.p1_z.delete(0, END)
-        # self.p1_z.insert(0, "0")
-        #
-        # self.p2_x.delete(0, END)
-        # self.p2_x.insert(0, "0")
-        # self.p2_y.delete(0, END)
-        # self.p2_y.insert(0, "0")
-        # self.p2_z.delete(0, END)
-        # self.p2_z.insert(0, "0")
+        self.scale_z.insert(0, "2")
+        self.dist_z.delete(0, END)
+        self.dist_z.insert(0, "100")
 
     def rotate_action(self):
         """
@@ -288,10 +265,12 @@ class Gui:
         # scale = float(self.scale_input.get())
         # self.figure.scaleC(xscale=scale, yscale=scale, zscale=scale)
         # self.plot_figure()
-
+        print('center', self.figure._center)
+        print('c1', self.figure._points[0])
         self.figure = self.figure.scaleC(xscale=float(self.scale_x.get()),
                                          yscale=float(self.scale_y.get()),
                                          zscale=float(self.scale_z.get()))
+        print('c2', self.figure._points[0])
         self.plot_figure()
 
     def shift_action(self):
@@ -317,13 +296,24 @@ class Gui:
         # self.figure.setcenter(self.CANVAS_WIDTH / 2, self.CANVAS_WIDTH / 2, self.CANVAS_WIDTH / 2)
         pnts, edgs = self.figure.projection(tp=self.proection, key=self.xyz)
         edge_width = 50
+        self.canvas.create_line(0, self.CANVAS_HEIGHT / 2, self.CANVAS_WIDTH, self.CANVAS_HEIGHT / 2, fill='#0000CC')
+        self.canvas.create_line( self.CANVAS_WIDTH / 2, self.CANVAS_HEIGHT, self.CANVAS_WIDTH / 2, 0, fill='blue')
         if len(edgs) >= 2:
             p1 = pnts[edgs[0][0]]
             p2 = pnts[edgs[0][1]]
             edge_width = np.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2 + (p1.z - p2.z) ** 2)
+            edge_width = 50000
+        camera_dist = float(self.dist_z.get())
+        c = pnts[0]
+        for p in pnts:
+            if p.z > c.z:
+                c = p
+        norm = dist(p, P(0, 0, camera_dist))
         for e in edgs:
             p1 = pnts[e[0]]
+            p1_d = dist(p1, P(0, 0, camera_dist)) / norm
             p2 = pnts[e[1]]
+            p2_d = dist(p1, P(0, 0, camera_dist)) / norm
             height = self.CANVAS_HEIGHT / 2
             width = self.CANVAS_WIDTH / 2
             if self.proection == 0:
@@ -336,8 +326,7 @@ class Gui:
             elif self.proection == 1:
                 self.canvas.create_line(width + p1.x, height - p1.y, width + p2.x, height - p2.y)
             elif self.proection == 2:
-                self.canvas.create_line((width + p1.x) / (height + p1.z) / (edge_width / 50000), (height - p1.y) / (height + p1.z) / (edge_width / 50000), 
-                (width + p1.x) / (height + p1.z) / (edge_width / 50000), (height - p1.y) / (height + p1.z) / (edge_width / 50000))
+                self.canvas.create_line(width + p1.x / p1_d, height - p1.y / p1_d, width + p2.x / p2_d, height - p2.y / p2_d)
 
     def left_button_release(self, event):
         """
@@ -355,12 +344,13 @@ class Gui:
         elif self.what_figure.get() == "Додекаэдр":
             self.figure = Dodecahedron()
         elif self.what_figure.get() == "Функция":
-                self.figure = Func(f=lambda x, y: np.sin((x + y) * 3), x0=-5, x1=5, y0=-5, y1=5, step=0.2)
+                self.figure = Func(f=lambda x, y: np.sin((x + y) * 3), x0=0, x1=5, y0=0, y1=5, step=0.2)
+                print(self.figure._points)
                 # np.sin((x + y) * 3)
                 # (x + y)
         elif self.what_figure.get() == "Фигура вращения":
-            self.figure = RotationFigure([[100, 0, 50], [100, 0, 150]], partitions=4, key=2) # [[0, 100, 40], [20, 60, 70], [0, 30, 50], [0, 10, 50]]
-
+            self.figure = RotationFigure([[100, 0, 0], [25, 0, 100]], partitions=7, key=2) # [[0, 100, 40], [20, 60, 70], [0, 30, 50], [0, 10, 50]]
+        
         tp = 0
         if self.what_proection.get() == 'Перспективная':
             tp = 2
