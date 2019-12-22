@@ -314,9 +314,9 @@ class Gui:
         norm = dist(nearest_point, camera_point)
         for e in edgs:
             p1 = pnts[e[0]]
-            p1_scale = dist(p1, camera_point) / self.figure.norm # norm
+            p1_scale = dist(p1, camera_point) / camera_dist# self.figure.norm # norm
             p2 = pnts[e[1]]
-            p2_scale = dist(p2, camera_point) / self.figure.norm # norm
+            p2_scale = dist(p2, camera_point) / camera_dist# self.figure.norm # norm
             if self.proection == 0:
                 if self.xyz == 0:
                     self.canvas.create_line(width + p1.y, height - p1.z, width + p2.y, height - p2.z)
