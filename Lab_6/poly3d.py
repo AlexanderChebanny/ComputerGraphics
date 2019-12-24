@@ -83,7 +83,7 @@ class N_edge(object):
     
     x y z типа float - координаты точек
     ...
-    i j  типа int - ребра, т.е. пары индексов вершин (индексы считаются по мере считывания файла от 0)
+    i j  типа int - ребра, т.е. пары индексов вершин (индексы счита ются по мере считывания файла от 0)
     ...
     True/False - находится ли центр в (0, 0, 0) (False - находится)
     '''
@@ -347,74 +347,29 @@ class Tetrahedron(N_edge):
          self._esize = 6
          self = self.scaleC(scale, scale, scale)
          
-         
-# Класс гексаэдр (куб)
-class Hexahedron(N_edge):    
-     
-    def __init__(self, scale=50):
-         self._center = P()
-         self._worldcoor = False
-         self._points = [P(1, 1, -1), P(1, -1, -1), P(1, -1, 1), P(1, 1, 1), P(-1, 1, -1),
-                         P(-1, -1, -1), P(-1, -1, 1), P(-1, 1, 1)]      
-         self._edges = [[0, 1], [0, 4], [0 ,3], [1, 2], [1, 5], [2, 3], [2, 6], 
-                        [3, 7], [4, 5], [4, 7], [5, 6], [6, 7]]
-         self = self.scaleC(scale, scale, scale)
-         
-         
-# Класс октаэдр (восьмигранник)
-class Octahedron(N_edge):     
-    
-     def __init__(self, scale = 50):
-         self._center = P()
-         self._worldcoor = False
-         self._points = [P(1, 0, 0), P(0, -1, 0), P(0, 1, 0), P(0, 0, -1), P(0, 0, 1), P(-1, 0, 0)]     
-         self._edges = [[0, 1], [0, 2], [0, 3], [0, 4], [1, 3], [1, 4],
-                        [1, 5], [2, 3], [2, 4], [2, 5], [3, 5], [4, 5]]
-         self = self.scaleC(scale, scale, scale)
-         
-         
-# Класс икосаэдр (20-гранник)
-class Icosahedron(N_edge):
-    
-     def __init__(self, scale=50):
-         self._center = P()
-         self._worldcoor = False
-         r = (1 + m.sqrt(5))/2
-         self._points = [P(0, -1, -r), P(0, 1, -r), P(1, r, 0), P(r, 0, -1),
-                         P(1, -r, 0), P(-1, -r, 0), P(-r, 0, -1), P(-1, r, 0),
-                         P(r, 0, 1), P(-r, 0, 1), P(0, -1, r), P(0, 1, r)]     
-         self._edges = [[0, 1], [0, 3], [0, 4], [0, 5], [0, 6], 
-                        [1, 2], [1, 3], [1, 6], [1, 7], 
-                        [2, 3], [2, 7], [2, 8], [2, 11], 
-                        [3, 4], [3, 8], 
-                        [4, 5], [4, 8], [4, 10], 
-                        [5, 6], [5, 9], [5, 10], 
-                        [6, 7], [6, 9], 
-                        [7, 9], [7, 11], 
-                        [8, 10], [8, 11], 
-                        [9, 10], [9, 11],
-                        [10, 11]]
-         self = self.scaleC(scale, scale, scale)
-    
+# Груфик функции двух переменных
+class Func(N_edge):
 
-# Класс додекаэдр (12-гранник) 
-class Dodecahedron(N_edge):
-    
-     def __init__(self, scale=50):
-         self._center = P()
-         self._worldcoor = False
-         r = (3 + m.sqrt(5)) / 2
-         x = (1 + m.sqrt(5)) / 2
-         self._points = [P(0, -1, -r), P(0, 1, -r), P(x, x, -x), P(r, 0, -1),
-                         P(x, -x, -x), P(1, -r, 0), P(-1, -r, 0), P(-x, -x, -x),
-                         P(-r, 0, -1), P(-x, x, -x), P(-1, r, 0), P(1, r, 0),
-                         P(-x, -x, x), P(0, -1, r), P(x, -x, x), P(0, 1, r),
-                         P(-x, x, x), P(x, x, x), P(-r, 0, 1), P(r, 0, 1)]    
-         
-         self._edges = [[0, 1], [0, 4], [0, 7], [1, 2], [1, 9],
-                        [2, 3], [2, 11], [3, 4], [3, 19], [4, 5],
-                        [5, 6], [5, 14], [6, 7], [6, 12], [7, 8],
-                        [8, 9], [8, 18], [9, 10], [10, 11], [10, 16],
-                        [11, 17], [12, 13], [12, 18], [13, 14], [13, 15],
-                        [14, 19], [15, 16], [15, 17], [16, 18], [17, 19]]
-         self = self.scaleC(scale, scale, scale)
+    def __init__(self, f, x0, x1, y0, y1, step = 0.1):
+        max1 = min1 = f(x0, y0)
+        self._points = []
+        self._edges = []
+        x = x0
+        i = 0
+        while x < x1:
+            y = y0
+            while y < y1:
+                z = f(x, y)
+                if (z < min1):
+                    min1 = z
+                if (z > max1):
+                    max1 = z
+                self._points.append(P(x, y, z))
+                self._edges.append([i, i + 1])
+                i += 1
+                y += step
+            i += 1
+            x += step
+
+        self._worldcoor = False
+        self._centr = P((x1 - x0) / 2, (y1 - y0) / 2, (max1 - min1) / 2)

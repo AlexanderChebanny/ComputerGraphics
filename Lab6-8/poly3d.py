@@ -42,7 +42,12 @@ class P(object):
     def __repr__(self):
         return "(%s, %s, %s)" % (self.x, self.y, self.z)
 
+def scalar_prod(p1, p2):
+    return p1.x * p2.x + p1.y * p2.y + p1.z * p2.z
 
+def vector_prod(a, b):
+    return P(a.y * b.z- a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x)
+    
 # Класс линия
 class L(object):
 
@@ -147,21 +152,8 @@ class N_edge(object):
         else:
             self._worldcoor = True
         return self
-
-    # Устанавливает центр в точке (0, 0, 0)
-    '''
-    def returnCtoZ(self):
-        x = self._center.x
-        y = self._center.y
-        z = self._center.z
-        newpoints = []
-        addp = P(x, y, z)
-        for p in self._points:
-            newpoints.append(p - addp)
-        self._points = newpoints
-        self.center()
-        self._worldcoor = False
-    '''
+    
+        
     # Проецирование фигуры тремя способами
     # tp = 0 (ортографическое), 1 (изометрическое), 2 (перспективное)
     # key = 0 (на yz), 1 (на xz), 2 (на xy) ДЛЯ ОРТОГРАФИЧЕСКИХ
@@ -189,16 +181,29 @@ class N_edge(object):
             mulmatr = per
         
         norms = list(range(len(self.faces)))
-        for p1, p2, p3 in self.faces:
-            
-        bad_points = []
+        l = 0
+        for face in self.faces:
+            p1i = p2i = p3i = 0
+            if len(face) == 3:
+                p1i, p2i, p3i = face
+            if len(face) == 4:
+                p1i, p2i, p3i, _ = face
+            norm = vector_prod(self._points[p2i] - self._points[p1i], self._points[p3i] - self._points[p1i])
+            sg = np.sign(scalar_prod(norm, self._points[p1i] - self._center))
+            norms[l] = norm * P(sg, sg, sg)
+            l += 1
+        #self.normals = norms
+        good_faces = []
+        for zi in range(len(self.faces)):
+            if scalar_prod(norms[zi], self.view_vector) < 0:
+                good_faces.append(self.faces[zi])
         newedges = []
         
         for p in self._points:
             newp = np.matmul(mulmatr, [p.x, p.y, p.z, 1])
             newpoints.append(P(newp[0], newp[1], newp[2]))
 
-        return newpoints, newedges
+        return newpoints, self._edges, good_faces
 
     # Поворот относительно выбранной оси координат (проходящей через центр)
     # key = 0 (относительно Х), 1 (относительно Y), 2 (относительно Z)
@@ -351,6 +356,8 @@ class Hexahedron(N_edge):
                         P(-1, -1, -1), P(-1, -1, 1), P(-1, 1, 1)]
         self._edges = [[0, 1], [0, 4], [0, 3], [1, 2], [1, 5], [2, 3], [2, 6],
                        [3, 7], [4, 5], [4, 7], [5, 6], [6, 7]]
+        self.faces =self._faces = [[0, 1, 2, 3], [0, 3, 7, 4], [1, 2, 6, 5] ,[5, 4, 7, 6], [0, 1, 5, 4], [2, 3, 7, 6]]
+        self.view_vector = P(0, 0, -1)
         self = self.scaleC(scale, scale, scale)
         self.norm = dist(self._center, camera_point)
 

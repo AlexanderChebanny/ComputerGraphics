@@ -14,7 +14,7 @@ class Gui:
         self.proection = None   # проецирование = 0 (ортографическое), 1 (изометрическое), 2 (перспективное)
         self.xyz = None         # проецирование = 0 (на yz), 1 (на xz), 2 (на xy) ДЛЯ ОРТОГРАФИЧЕСКИХ
 
-        self.window.title("MECHMAT SILA")
+        self.window.title("MECHMAT GOVNO EBANOE")
         self.window.resizable(False, False)
         # canvas
         self.canvas = Canvas(self.window, width=self.CANVAS_WIDTH, height=self.CANVAS_HEIGHT, background='white')
@@ -296,7 +296,7 @@ class Gui:
         # self.figure.setcenter(self.CANVAS_WIDTH / 2, self.CANVAS_WIDTH / 2, self.CANVAS_WIDTH / 2)
         height = self.CANVAS_HEIGHT / 2
         width = self.CANVAS_WIDTH / 2
-        pnts, edgs = self.figure.projection(tp=self.proection, key=self.xyz)
+        pnts, edgs, faces = self.figure.projection(tp=self.proection, key=self.xyz)
         #edge_width = 50
         #self.canvas.create_line(0, self.CANVAS_HEIGHT / 2, self.CANVAS_WIDTH, self.CANVAS_HEIGHT / 2, fill='#0000CC')
         #self.canvas.create_line( self.CANVAS_WIDTH / 2, self.CANVAS_HEIGHT, self.CANVAS_WIDTH / 2, 0, fill='blue')
@@ -312,6 +312,88 @@ class Gui:
                 nearest_point = p
         camera_point = P(0, 0, camera_dist)
         norm = dist(nearest_point, camera_point)
+        for face in faces:
+            p1 = pnts[face[0]]
+            p1_scale = dist(p1, camera_point) / camera_dist# self.figure.norm # norm
+            p2 = pnts[face[1]]
+            p2_scale = dist(p2, camera_point) / camera_dist# self.figure.norm # norm
+            if self.proection == 0:
+                if self.xyz == 0:
+                    self.canvas.create_line(width + p1.y, height - p1.z, width + p2.y, height - p2.z)
+                elif self.xyz == 1:
+                    self.canvas.create_line(width + p1.x, height - p1.z, width + p2.x, height - p2.z)
+                elif self.xyz == 2:
+                    self.canvas.create_line(width + p1.x, height - p1.y, width + p2.x, height - p2.y)
+            elif self.proection == 1:
+                self.canvas.create_line(width + p1.x, height - p1.y, width + p2.x, height - p2.y)
+            elif self.proection == 2:
+                self.canvas.create_line(width + p1.x / p1_scale, height - p1.y / p1_scale, width + p2.x / p2_scale, height - p2.y / p2_scale)
+                
+            p1 = pnts[face[1]]
+            p1_scale = dist(p1, camera_point) / camera_dist# self.figure.norm # norm
+            p2 = pnts[face[2]]
+            p2_scale = dist(p2, camera_point) / camera_dist# self.figure.norm # norm
+            if self.proection == 0:
+                if self.xyz == 0:
+                    self.canvas.create_line(width + p1.y, height - p1.z, width + p2.y, height - p2.z)
+                elif self.xyz == 1:
+                    self.canvas.create_line(width + p1.x, height - p1.z, width + p2.x, height - p2.z)
+                elif self.xyz == 2:
+                    self.canvas.create_line(width + p1.x, height - p1.y, width + p2.x, height - p2.y)
+            elif self.proection == 1:
+                self.canvas.create_line(width + p1.x, height - p1.y, width + p2.x, height - p2.y)
+            elif self.proection == 2:
+                self.canvas.create_line(width + p1.x / p1_scale, height - p1.y / p1_scale, width + p2.x / p2_scale, height - p2.y / p2_scale)
+            if len(face) == 3:
+                p1 = pnts[face[2]]
+                p1_scale = dist(p1, camera_point) / camera_dist# self.figure.norm # norm
+                p2 = pnts[face[0]]
+                p2_scale = dist(p2, camera_point) / camera_dist# self.figure.norm # norm
+                if self.proection == 0:
+                    if self.xyz == 0:
+                        self.canvas.create_line(width + p1.y, height - p1.z, width + p2.y, height - p2.z)
+                    elif self.xyz == 1:
+                        self.canvas.create_line(width + p1.x, height - p1.z, width + p2.x, height - p2.z)
+                    elif self.xyz == 2:
+                        self.canvas.create_line(width + p1.x, height - p1.y, width + p2.x, height - p2.y)
+                elif self.proection == 1:
+                    self.canvas.create_line(width + p1.x, height - p1.y, width + p2.x, height - p2.y)
+                elif self.proection == 2:
+                    self.canvas.create_line(width + p1.x / p1_scale, height - p1.y / p1_scale, width + p2.x / p2_scale, height - p2.y / p2_scale)
+            elif len(face) == 4:
+                p1 = pnts[face[2]]
+                p1_scale = dist(p1, camera_point) / camera_dist# self.figure.norm # norm
+                p2 = pnts[face[3]]
+                p2_scale = dist(p2, camera_point) / camera_dist# self.figure.norm # norm
+                if self.proection == 0:
+                    if self.xyz == 0:
+                        self.canvas.create_line(width + p1.y, height - p1.z, width + p2.y, height - p2.z)
+                    elif self.xyz == 1:
+                        self.canvas.create_line(width + p1.x, height - p1.z, width + p2.x, height - p2.z)
+                    elif self.xyz == 2:
+                        self.canvas.create_line(width + p1.x, height - p1.y, width + p2.x, height - p2.y)
+                elif self.proection == 1:
+                    self.canvas.create_line(width + p1.x, height - p1.y, width + p2.x, height - p2.y)
+                elif self.proection == 2:
+                    self.canvas.create_line(width + p1.x / p1_scale, height - p1.y / p1_scale, width + p2.x / p2_scale, height - p2.y / p2_scale)
+                p1 = pnts[face[3]]
+                p1_scale = dist(p1, camera_point) / camera_dist# self.figure.norm # norm
+                p2 = pnts[face[0]]
+                p2_scale = dist(p2, camera_point) / camera_dist# self.figure.norm # norm
+                if self.proection == 0:
+                    if self.xyz == 0:
+                        self.canvas.create_line(width + p1.y, height - p1.z, width + p2.y, height - p2.z)
+                    elif self.xyz == 1:
+                        self.canvas.create_line(width + p1.x, height - p1.z, width + p2.x, height - p2.z)
+                    elif self.xyz == 2:
+                        self.canvas.create_line(width + p1.x, height - p1.y, width + p2.x, height - p2.y)
+                elif self.proection == 1:
+                    self.canvas.create_line(width + p1.x, height - p1.y, width + p2.x, height - p2.y)
+                elif self.proection == 2:
+                    self.canvas.create_line(width + p1.x / p1_scale, height - p1.y / p1_scale, width + p2.x / p2_scale, height - p2.y / p2_scale)
+                
+
+        '''
         for e in edgs:
             p1 = pnts[e[0]]
             p1_scale = dist(p1, camera_point) / camera_dist# self.figure.norm # norm
@@ -328,6 +410,7 @@ class Gui:
                 self.canvas.create_line(width + p1.x, height - p1.y, width + p2.x, height - p2.y)
             elif self.proection == 2:
                 self.canvas.create_line(width + p1.x / p1_scale, height - p1.y / p1_scale, width + p2.x / p2_scale, height - p2.y / p2_scale)
+        '''
 
     def left_button_release(self, event):
         """

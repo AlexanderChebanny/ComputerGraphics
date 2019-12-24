@@ -2,13 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d6c2845e-f42d-42ae-96c3-682d674673d8" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/ComputerGraphics.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ComputerGraphics.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lab 3/lol.png" beforeDir="false" afterPath="$PROJECT_DIR$/Lab 3/lol.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lab 3/new.png" beforeDir="false" afterPath="$PROJECT_DIR$/Lab 3/new.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lab 4/alex.py" beforeDir="false" afterPath="$PROJECT_DIR$/Lab 4/alex.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lab 4/lab4.py" beforeDir="false" afterPath="$PROJECT_DIR$/Lab 4/lab4.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lab6-8/poly3d.py" beforeDir="false" afterPath="$PROJECT_DIR$/Lab6-8/poly3d.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lab_6/interface.py" beforeDir="false" afterPath="$PROJECT_DIR$/Lab_6/interface.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lab_6/poly3d.py" beforeDir="false" afterPath="$PROJECT_DIR$/Lab_6/poly3d.py" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -22,127 +21,24 @@
     <SUITE FILE_PATH="coverage/ComputerGraphics$task2__1_.coverage" NAME="task2 (1) Coverage Results" MODIFIED="1570741915549" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Lab 3" />
     <SUITE FILE_PATH="coverage/ComputerGraphics$lab4.coverage" NAME="lab4 Coverage Results" MODIFIED="1571045571585" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Lab 4" />
   </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Lab 3/task1a.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
-              <folding>
-                <element signature="e#205#215#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Lab 4/alex.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="648">
-              <caret line="363" column="13" selection-start-line="363" selection-start-column="13" selection-end-line="363" selection-end-column="13" />
-              <folding>
-                <element signature="e#21#42#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Lab 4/lab4.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2340">
-              <caret line="157" column="19" selection-start-line="4" selection-end-line="157" selection-end-column="19" />
-              <folding>
-                <element signature="e#0#18#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Lab 3/task1b.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-36">
-              <caret line="4" column="18" selection-start-line="4" selection-start-column="18" selection-end-line="4" selection-end-column="18" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Lab 3/task2.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="18" selection-start-line="4" selection-start-column="18" selection-end-line="4" selection-end-column="18" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
-  </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>on_click1</find>
-    </findStrings>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/Lab 3/task2 (1).py" />
-        <option value="$PROJECT_DIR$/Lab 3/task1b.py" />
-        <option value="$PROJECT_DIR$/Lab 3/task2.py" />
-        <option value="$PROJECT_DIR$/Lab 3/task1a.py" />
-        <option value="$PROJECT_DIR$/Lab 4/lab4.py" />
-        <option value="$PROJECT_DIR$/Lab 4/alex.py" />
-      </list>
-    </option>
-  </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="703" />
-    <option name="y" value="23" />
-    <option name="width" value="977" />
-    <option name="height" value="967" />
-  </component>
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="ComputerGraphics" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ComputerGraphics" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-    </panes>
+  <component name="ProjectId" id="1U3mP3eE2abUbXdJ11AtKx6T5J7" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$USER_HOME$/anaconda3/bin" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
+  <component name="PyDebuggerOptionsProvider">
+    <option name="mySaveCallSignatures" value="true" />
   </component>
   <component name="RunManager" selected="Python.task1a">
     <configuration name="alex" type="PythonConfigurationType" factoryName="Python" temporary="true">
@@ -265,6 +161,18 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -285,89 +193,59 @@
   <component name="TimeTrackingManager">
     <option name="totallyTimeSpent" value="7113000" />
   </component>
-  <component name="ToolWindowManager">
-    <frame x="703" y="23" width="977" height="967" extended-state="0" />
-    <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21283422" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.17828572" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3997722" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="11" visible="true" weight="0.32914287" />
-      <window_info anchor="bottom" id="Python Console" order="12" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="SciView" order="3" />
-      <window_info anchor="right" id="Database" order="4" />
-    </layout>
-  </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor />
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Lab 3/task2 (1).py" />
-    <entry file="file://$PROJECT_DIR$/Lab 4/lab4.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2340">
-          <caret line="157" column="19" selection-start-line="4" selection-end-line="157" selection-end-column="19" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Lab 3/task2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="18" selection-start-line="4" selection-start-column="18" selection-end-line="4" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Lab 4/alex.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="648">
-          <caret line="363" column="13" selection-start-line="363" selection-start-column="13" selection-end-line="363" selection-end-column="13" />
-          <folding>
-            <element signature="e#21#42#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Lab 3/task1a.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
-          <folding>
-            <element signature="e#205#215#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Lab 3/task1b.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-36">
-          <caret line="4" column="18" selection-start-line="4" selection-start-column="18" selection-end-line="4" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="503" y="106" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1577041304856">
+      <screen x="0" y="0" width="1920" height="1052" />
+    </state>
+    <state x="503" y="106" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1052@0.0.1920.1052" timestamp="1577041304856" />
+    <state x="697" y="287" width="515" height="479" key="EnvironmentVariablesDialog" timestamp="1577041299784">
+      <screen x="0" y="0" width="1920" height="1052" />
+    </state>
+    <state x="697" y="287" width="515" height="479" key="EnvironmentVariablesDialog/0.0.1920.1052@0.0.1920.1052" timestamp="1577041299784" />
+    <state x="732" y="284" width="424" height="485" key="FileChooserDialogImpl" timestamp="1577041396011">
+      <screen x="0" y="0" width="1920" height="1052" />
+    </state>
+    <state x="732" y="284" width="424" height="485" key="FileChooserDialogImpl/0.0.1920.1052@0.0.1920.1052" timestamp="1577041396011" />
+    <state width="1377" height="128" key="GridCell.Tab.0.bottom" timestamp="1577041414407">
+      <screen x="0" y="0" width="1920" height="1052" />
+    </state>
+    <state width="1377" height="128" key="GridCell.Tab.0.bottom/0.0.1920.1052@0.0.1920.1052" timestamp="1577041414407" />
+    <state width="1377" height="128" key="GridCell.Tab.0.center" timestamp="1577041414407">
+      <screen x="0" y="0" width="1920" height="1052" />
+    </state>
+    <state width="1377" height="128" key="GridCell.Tab.0.center/0.0.1920.1052@0.0.1920.1052" timestamp="1577041414407" />
+    <state width="1377" height="128" key="GridCell.Tab.0.left" timestamp="1577041414406">
+      <screen x="0" y="0" width="1920" height="1052" />
+    </state>
+    <state width="1377" height="128" key="GridCell.Tab.0.left/0.0.1920.1052@0.0.1920.1052" timestamp="1577041414406" />
+    <state width="1377" height="128" key="GridCell.Tab.0.right" timestamp="1577041414407">
+      <screen x="0" y="0" width="1920" height="1052" />
+    </state>
+    <state width="1377" height="128" key="GridCell.Tab.0.right/0.0.1920.1052@0.0.1920.1052" timestamp="1577041414407" />
+    <state x="464" y="161" width="992" height="731" key="SettingsEditor" timestamp="1577041402792">
+      <screen x="0" y="0" width="1920" height="1052" />
+    </state>
+    <state x="464" y="161" width="992" height="731" key="SettingsEditor/0.0.1920.1052@0.0.1920.1052" timestamp="1577041402792" />
+    <state x="653" y="353" key="com.intellij.ide.util.TipDialog" timestamp="1577041233626">
+      <screen x="0" y="0" width="1920" height="1052" />
+    </state>
+    <state x="653" y="353" key="com.intellij.ide.util.TipDialog/0.0.1920.1052@0.0.1920.1052" timestamp="1577041233626" />
   </component>
   <component name="masterDetails">
     <states>

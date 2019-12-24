@@ -41,10 +41,7 @@ class Gui:
         OPTIONS_figure = [
             "",
             "Тетраэдр",
-            "Гексаэдр",
-            "Октаэдр",
-            "Икосаэдр",
-            "Додекаэдр"
+            "Функция"
         ]
         self.label1 = ttk.Label(self.window, text='Фигура:                ')
         self.label1.grid(row=1, column=1)
@@ -304,14 +301,8 @@ class Gui:
         self.figure = Tetrahedron()
         if self.what_figure.get() == "Тетраэдр":
             self.figure = Tetrahedron()
-        elif self.what_figure.get() == "Гексаэдр":
-            self.figure = Hexahedron()
-        elif self.what_figure.get() == "Октаэдр":
-            self.figure = Octahedron()
-        elif self.what_figure.get() == "Икосаэдр":
-            self.figure = Icosahedron()
-        elif self.what_figure.get() == "Додекаэдр":
-            self.figure = Dodecahedron()
+        elif self.what_figure.get() == "Функция":
+            self.figure = Func()
 
         tp = 0
         if self.what_proection.get() == 'Перспективная':
