@@ -31,7 +31,7 @@ class P(object):
 
     def __floordiv__(self, p):
         try:
-            return P(self.x // p.x, self.y // p.y, self.z // p.z)
+            return P(self.x / p, self.y / p, self.z / p)
         except:
             return "Dividing by zero"
 
@@ -218,7 +218,7 @@ class N_edge(object):
             if scalar_prod(norms[zi], self.view_vector) > 0:
                 good_faces.append(self.faces[zi])
 
-        return newpoints, self._edges, good_faces
+        return newpoints, self._edges, good_faces, newcenter
 
     # Поворот относительно выбранной оси координат (проходящей через центр)
     # key = 0 (относительно Х), 1 (относительно Y), 2 (относительно Z)

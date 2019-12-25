@@ -12,8 +12,8 @@ def interpolate(i0, d0, i1, d1):
     a = (d1 - d0) / (i1 - i0)
     d = d0
     for i in range(i0, i1 + 1):
-        values.append(int(d))
-        d += a
+        values.append(d + 0.5)
+        d = d + a
     return values
 
 
@@ -374,37 +374,59 @@ class Gui:
 
         self.plot_figure()
 
-    def draw_shaded_triangle(self, P0:(int, int, int), P1:(int, int, int), P2:(int, int, int)):
+    def draw_shaded_triangle(self, P0:(int, int, int), P1:(int, int, int), P2:(int, int, int), C = [1, 1, 1]):
         height = self.CANVAS_HEIGHT / 2
         width = self.CANVAS_HEIGHT / 2
         # Сортировка точек так, что y0 <= y1 <= y2
         y0, y1, y2 = P0[1], P1[1], P2[1]
-        if P2[1] < P0[1]:
+
+        if y0 == y1 == y2:
+            return
+
+        if P1[1] < P0[1]:
             P1, P0 = P0, P1
+            t = C[1]
+            C[1] = C[0]
+            C[0] = C[t]
+
         if P2[1] < P0[1]:
             P2, P0 = P0, P2
-        if P2[1] < P2[1]:
+            t = C[2]
+            C[2] = C[0]
+            C[0] = C[2]
+
+        if P2[1] < P1[1]:
             P2, P1 = P1, P2
+            t = C[2]
+            C[2] = C[1]
+            C[1] = t
 
         x0, x1, x2 = P0[0], P1[0], P2[0]
         y0, y1, y2 = P0[1], P1[1], P2[1]
         z0, z1, z2 = P0[2], P1[2], P2[2]
-        print('y0: ', P0[0], P0[1], P0[2])
-        print('y1: ', P1[0], P1[1], P1[2])
-        print('y2: ', P2[0], P2[1], P2[2])
+        #print('y0: ', P0[0], P0[1], P0[2])
+        #print('y1: ', P1[0], P1[1], P1[2])
+        #print('y2: ', P2[0], P2[1], P2[2])
         # Вычисление координат x и значений h для рёбер треугольника
         x01 = interpolate(y0, x0, y1, x1)
         z01 = interpolate(y0, z0, y1, z1)
-        print(y1, x1, y2, x2)
+        #print(y1, x1, y2, x2)
         x12 = interpolate(y1, x1, y2, x2)
         z12 = interpolate(y1, z1, y2, z2)
 
         x02 = interpolate(y0, x0, y2, x2)
         z02 = interpolate(y0, z0, y2, z2)
+        c0 = C[0]
+        c1 = C[1]
+        c2 = C[2]
 
-        print('01 len: ', len(x01))
-        print('12 len: ', len(x12))
-        print('02 len: ', len(x02))
+        c01 = interpolate(y0, (int)(c0 * 100), y1, (int)(c1 * 100))
+        c12 = interpolate(y1, (int)(c1 * 100), y2, (int)(c2 * 100))
+        c02 = interpolate(y0, (int)(c0 * 100), y2, (int)(c2 * 100))
+
+        #print('01 len: ', len(x01))
+        #print('12 len: ', len(x12))
+        #print('02 len: ', len(x02))
 
 
 
@@ -415,9 +437,10 @@ class Gui:
         z01 = z01[:-1]
         z012 = z01 + z12
 
+        c01 = z01[:-1]
+        c012 = c01 + c12
+
         # Определяем, какая из сторон левая и правая
-        print(len(x02))
-        print(len(x012))
         m = len(x02) // 2
 
         x_left = 0
@@ -430,25 +453,43 @@ class Gui:
             x_right = x012
             z_left = z02
             z_right = z012
+            c_left = c02
+            c_right = c012
         else:
             x_left = x012
             x_right = x02
             z_left = z012
             z_right = z02
+            c_left = c012
+            c_right = c02
 
         # Отрисовка горизонтальных отрезков
         for y in range(y0, y2):
-            x_l = x_left[y - y0]
-            x_r = x_right[y - y0]
+            x_l = int(x_left[y - y0])
+            x_r = int(x_right[y - y0])
             if x_l > x_r:
                 continue
-
             h_segment = interpolate(x_l, z_left[y - y0], x_r, z_right[y - y0])
+            c_segment = interpolate(x_l, c_left[y - y0], x_r, c_right[y - y0])
             for x in range(x_l, x_r + 1):
                 shaded_color = 'aa'#hex(int(255 * h_segment[x - x_l] + 100 / 1000))[2:].zfill(2)
-                #print(h_segment[x - x_l])
-                self.canvas.create_oval(width + x, height - y, width + x + 1, height - y + 1, outline="#"+shaded_color+"0000")
+                z = h_segment[x - x_l]
+                c = c_segment[x - x_l] / 100
+                xx = x + width / 2
+                yy = -y + height / 2
+                #if xx < 0 or xx > width or yy < 0 or yy > height or (xx * height + yy) < 0 or (xx * height + yy) > (width * height - 1):
+                #    continue;
 
+                c = min(1, max(0, c))
+                fcolor = (255, 0, 100)
+                r, g, b = [x * c for x in fcolor]
+                r = hex(int(r))[2:].zfill(2)
+                g = hex(int(g))[2:].zfill(2)
+                b = hex(int(b))[2:].zfill(2)
+                self.canvas.create_oval(width + x, height - y, width + x + 1, height - y - 1, outline="#"+r+g+b)
+                #if z > buff[xx * height + yy]:
+                    #[xx * height + yy] = (int)(z + 0.5)
+                    #colors[xx * height + yy] = c
 
     def plot_figure(self):
         """
@@ -468,16 +509,54 @@ class Gui:
         #self.draw_shaded_triangle((47, 0, -16), (-23, 40, -16), (-23, -40, -16))#(0, 0, 100), (100,0, 100), (0, 100, 0))
         #print(P(1,1,1).to_tuple()[0])
         #'''
-        for face in self.figure.faces:
-            p1 = self.figure._points[face[0]].to_tuple()
-            p2 = self.figure._points[face[1]].to_tuple()
-            p3 = self.figure._points[face[2]].to_tuple()
+        light = P(100, 100, 100)
+        pnts, edgs, faces, center = self.figure.projection(tp=self.proection, key=self.xyz)
+        normals = []
+        ls = []
+        intensities = []
+        Is = []
+        for p in pnts:
+            normal = p - center
+            normal = normal // np.sqrt(scalar_prod(normal, normal))
+            normals.append(normal * P(50, 50, 50))
+            l = light - p
+            l = l // np.sqrt(scalar_prod(l, l))
+            ls.append(l * P(300, 300, 300))
+            I = max(0, scalar_prod(l, normal))
+            print('p: ', p, '; I: ', I)
+            Is.append(I)
+            intensities.append(I)
+
+        print('max:', max(Is))
+
+        for face in faces:
+            p1 = pnts[face[0]]
+            p2 = pnts[face[1]]
+            p3 = pnts[face[2]]
             print(p1, p2, p3)
-            self.draw_shaded_triangle(p1, p2, p3)
-            break
+            #itys = [intensities[face[i]] for i in range(3)]
+            self.draw_shaded_triangle(p1.to_tuple(), p2.to_tuple(), p3.to_tuple())#, itys)
+            self.canvas.create_line(width + p1.x, height - p1.y, width + p2.x, height - p2.y)
+
+            self.canvas.create_line(width + p2.x, height - p2.y, width + p3.x, height - p3.y)
+            self.canvas.create_line(width + p3.x, height - p3.y, width + p1.x, height - p1.y)
+            p1n = p1 + normals[face[0]]
+            p2n = p2 + normals[face[1]]
+            p3n = p3 + normals[face[2]]
+            p1l = p1 + ls[face[0]]
+            p2l = p2 + ls[face[1]]
+            p3l = p3 + ls[face[2]]
+            print('light', p1l)
+            self.canvas.create_line(width + p1.x, height - p1.y, width + p1n.x, height - p1n.y, fill='#ff33aa')
+            self.canvas.create_line(width + p2.x, height - p2.y, width + p2n.x, height - p2n.y, fill='#ff33aa')
+            self.canvas.create_line(width + p3.x, height - p3.y, width + p3n.x, height - p3n.y, fill='#ff33aa')
+            self.canvas.create_line(width + p1.x, height - p1.y, width + p1l.x, height - p1l.y, fill='#33ffff')
+            self.canvas.create_line(width + p2.x, height - p2.y, width + p2l.x, height - p2l.y, fill='#33ffff')
+            self.canvas.create_line(width + p3.x, height - p3.y, width + p3l.x, height - p3l.y, fill='#33ffff')
+            #break
             if len(face) == 4:
-                p4 = self.figure._points[face[3]].to_tuple()
-                self.draw_shaded_triangle(p2, p3, p4)
+                p4 = pnts[face[3]]
+                self.draw_shaded_triangle(p1.to_tuple(), p3.to_tuple(), p4.to_tuple())
                 #'''
         '''
         
