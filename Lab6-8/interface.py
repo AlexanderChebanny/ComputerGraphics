@@ -183,7 +183,53 @@ class Gui:
         self.dist_z = Entry(self.window, width=5)
         self.dist_z.grid(row=4, column=9)
 
+        ttk.Label(self.window, text="Camera angle:").grid(row=1, column=10)
+
+        self.label14 = ttk.Label(self.window, text='Ox: ')
+        self.label14.grid(row=2, column=10)
+        self.cscale_x = Entry(self.window, width=5)
+        self.cscale_x.grid(row=3, column=10)
+
+        self.label15 = ttk.Label(self.window, text='Oy: ')
+        self.label15.grid(row=4, column=10)
+        self.cscale_y = Entry(self.window, width=5)
+        self.cscale_y.grid(row=5, column=10)
+
+        self.label16 = ttk.Label(self.window, text='Oz: ')
+        self.label16.grid(row=6, column=10)
+        self.cscale_z = Entry(self.window, width=5)
+        self.cscale_z.grid(row=7, column=10)
+
+        self.move_button = ttk.Button(self.window, text='Move', command=self.move_camera)
+        self.move_button.grid(row=8, column=10)
+
+        ttk.Label(self.window, text="Camera shift:").grid(row=1, column=11)
+
+        self.label17 = ttk.Label(self.window, text='X: ')
+        self.label17.grid(row=2, column=11)
+        self.cshift_x = Entry(self.window, width=5)
+        self.cshift_x.grid(row=3, column=11)
+
+        self.label18 = ttk.Label(self.window, text='Y: ')
+        self.label18.grid(row=4, column=11)
+        self.cshift_y = Entry(self.window, width=5)
+        self.cshift_y.grid(row=5, column=11)
+
+        self.label19 = ttk.Label(self.window, text='Z: ')
+        self.label19.grid(row=6, column=11)
+        self.cshift_z = Entry(self.window, width=5)
+        self.cshift_z.grid(row=7, column=11)
+
         self.set_default_values()
+
+        self.Ox = int(self.cscale_x.get()) % 360
+        self.Oy = int(self.cscale_y.get()) % 360
+        self.Oz = int(self.cscale_z.get()) % 360
+
+        self.Sx = int(self.cshift_x.get())
+        self.Sy = int(self.cshift_y.get())
+        self.Sz = int(self.cshift_z.get())
+
         self.window.mainloop()
 
     def set_default_values(self):
@@ -212,8 +258,23 @@ class Gui:
         self.scale_y.insert(0, "2")
         self.scale_z.delete(0, END)
         self.scale_z.insert(0, "2")
+
         self.dist_z.delete(0, END)
         self.dist_z.insert(0, "100")
+
+        self.cscale_x.delete(0, END)
+        self.cscale_x.insert(0, "0")
+        self.cscale_y.delete(0, END)
+        self.cscale_y.insert(0, "0")
+        self.cscale_z.delete(0, END)
+        self.cscale_z.insert(0, "0")
+
+        self.cshift_x.delete(0, END)
+        self.cshift_x.insert(0, "0")
+        self.cshift_y.delete(0, END)
+        self.cshift_y.insert(0, "0")
+        self.cshift_z.delete(0, END)
+        self.cshift_z.insert(0, "0")
 
     def rotate_action(self):
         """
@@ -288,6 +349,19 @@ class Gui:
         """
         self.canvas.delete("all")
 
+    def move_camera(self):
+
+        self.Ox = (self.Ox + int(self.cscale_x.get())% 360) % 360
+        self.Oy = (self.Oy + int(self.cscale_y.get())% 360) % 360
+        self.Oz = (self.Oz + int(self.cscale_z.get())% 360) % 360
+
+        self.Sx += int(self.cshift_x.get())
+        self.Sy += int(self.cshift_y.get())
+        self.Sz += int(self.cshift_z.get())
+
+        self.plot_figure()
+
+
     def plot_figure(self):
         """
         Отрисовка изменённой фигуры
@@ -296,27 +370,21 @@ class Gui:
         # self.figure.setcenter(self.CANVAS_WIDTH / 2, self.CANVAS_WIDTH / 2, self.CANVAS_WIDTH / 2)
         height = self.CANVAS_HEIGHT / 2
         width = self.CANVAS_WIDTH / 2
+
+        self.figure.shift(-self.Sx, -self.Sy, -self.Sz)
+        self.figure.rotationL(P(0, 0, 0), P(1, 0, 0), -self.Ox)
+        self.figure.rotationL(P(0, 0, 0), P(0, 1, 0), -self.Oy)
+        self.figure.rotationL(P(0, 0, 0), P(0, 0, 1), -self.Oz)
+
         pnts, edgs, faces = self.figure.projection(tp=self.proection, key=self.xyz)
-        #edge_width = 50
-        #self.canvas.create_line(0, self.CANVAS_HEIGHT / 2, self.CANVAS_WIDTH, self.CANVAS_HEIGHT / 2, fill='#0000CC')
-        #self.canvas.create_line( self.CANVAS_WIDTH / 2, self.CANVAS_HEIGHT, self.CANVAS_WIDTH / 2, 0, fill='blue')
-        #if len(edgs) >= 2:
-            #p1 = pnts[edgs[0][0]]
-            #p2 = pnts[edgs[0][1]]
-            #edge_width = np.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2 + (p1.z - p2.z) ** 2)
-            #edge_width = 50000
         camera_dist = float(self.dist_z.get())
-        nearest_point = pnts[0]
-        for p in pnts:
-            if p.z > nearest_point.z:
-                nearest_point = p
         camera_point = P(0, 0, camera_dist)
-        norm = dist(nearest_point, camera_point)
+        print(faces)
+        print(pnts)
+        print(edgs)
         for face in faces:
             p1 = pnts[face[0]]
-            p1_scale = dist(p1, camera_point) / camera_dist# self.figure.norm # norm
             p2 = pnts[face[1]]
-            p2_scale = dist(p2, camera_point) / camera_dist# self.figure.norm # norm
             if self.proection == 0:
                 if self.xyz == 0:
                     self.canvas.create_line(width + p1.y, height - p1.z, width + p2.y, height - p2.z)
@@ -327,12 +395,10 @@ class Gui:
             elif self.proection == 1:
                 self.canvas.create_line(width + p1.x, height - p1.y, width + p2.x, height - p2.y)
             elif self.proection == 2:
-                self.canvas.create_line(width + p1.x / p1_scale, height - p1.y / p1_scale, width + p2.x / p2_scale, height - p2.y / p2_scale)
+                self.canvas.create_line(width + p1.x, height - p1.y, width + p2.x, height - p2.y)
                 
             p1 = pnts[face[1]]
-            p1_scale = dist(p1, camera_point) / camera_dist# self.figure.norm # norm
             p2 = pnts[face[2]]
-            p2_scale = dist(p2, camera_point) / camera_dist# self.figure.norm # norm
             if self.proection == 0:
                 if self.xyz == 0:
                     self.canvas.create_line(width + p1.y, height - p1.z, width + p2.y, height - p2.z)
@@ -343,12 +409,10 @@ class Gui:
             elif self.proection == 1:
                 self.canvas.create_line(width + p1.x, height - p1.y, width + p2.x, height - p2.y)
             elif self.proection == 2:
-                self.canvas.create_line(width + p1.x / p1_scale, height - p1.y / p1_scale, width + p2.x / p2_scale, height - p2.y / p2_scale)
+                self.canvas.create_line(width + p1.x, height - p1.y, width + p2.x, height - p2.y)
             if len(face) == 3:
                 p1 = pnts[face[2]]
-                p1_scale = dist(p1, camera_point) / camera_dist# self.figure.norm # norm
                 p2 = pnts[face[0]]
-                p2_scale = dist(p2, camera_point) / camera_dist# self.figure.norm # norm
                 if self.proection == 0:
                     if self.xyz == 0:
                         self.canvas.create_line(width + p1.y, height - p1.z, width + p2.y, height - p2.z)
@@ -359,12 +423,10 @@ class Gui:
                 elif self.proection == 1:
                     self.canvas.create_line(width + p1.x, height - p1.y, width + p2.x, height - p2.y)
                 elif self.proection == 2:
-                    self.canvas.create_line(width + p1.x / p1_scale, height - p1.y / p1_scale, width + p2.x / p2_scale, height - p2.y / p2_scale)
+                    self.canvas.create_line(width + p1.x, height - p1.y, width + p2.x, height - p2.y)
             elif len(face) == 4:
                 p1 = pnts[face[2]]
-                p1_scale = dist(p1, camera_point) / camera_dist# self.figure.norm # norm
                 p2 = pnts[face[3]]
-                p2_scale = dist(p2, camera_point) / camera_dist# self.figure.norm # norm
                 if self.proection == 0:
                     if self.xyz == 0:
                         self.canvas.create_line(width + p1.y, height - p1.z, width + p2.y, height - p2.z)
@@ -375,11 +437,9 @@ class Gui:
                 elif self.proection == 1:
                     self.canvas.create_line(width + p1.x, height - p1.y, width + p2.x, height - p2.y)
                 elif self.proection == 2:
-                    self.canvas.create_line(width + p1.x / p1_scale, height - p1.y / p1_scale, width + p2.x / p2_scale, height - p2.y / p2_scale)
+                    self.canvas.create_line(width + p1.x, height - p1.y, width + p2.x, height - p2.y)
                 p1 = pnts[face[3]]
-                p1_scale = dist(p1, camera_point) / camera_dist# self.figure.norm # norm
                 p2 = pnts[face[0]]
-                p2_scale = dist(p2, camera_point) / camera_dist# self.figure.norm # norm
                 if self.proection == 0:
                     if self.xyz == 0:
                         self.canvas.create_line(width + p1.y, height - p1.z, width + p2.y, height - p2.z)
@@ -390,9 +450,13 @@ class Gui:
                 elif self.proection == 1:
                     self.canvas.create_line(width + p1.x, height - p1.y, width + p2.x, height - p2.y)
                 elif self.proection == 2:
-                    self.canvas.create_line(width + p1.x / p1_scale, height - p1.y / p1_scale, width + p2.x / p2_scale, height - p2.y / p2_scale)
+                    self.canvas.create_line(width + p1.x, height - p1.y, width + p2.x, height - p2.y)
                 
 
+        self.figure.rotationL(P(self.Sx, self.Sy, self.Sz), P(self.Sx + 1, self.Sy, self.Sz), self.Ox)
+        self.figure.rotationL(P(self.Sx, self.Sy, self.Sz), P(self.Sx, self.Sy + 1, self.Sz), self.Oy)
+        self.figure.rotationL(P(self.Sx, self.Sy, self.Sz), P(self.Sx, self.Sy, self.Sz + 1), self.Oz)
+        self.figure.shift(self.Sx, self.Sy, self.Sz)
         '''
         for e in edgs:
             p1 = pnts[e[0]]
@@ -416,6 +480,14 @@ class Gui:
         """
         Установка фигуры по левому нажатию мыши
         """
+        self.Ox = int(self.cscale_x.get()) % 360
+        self.Oy = int(self.cscale_y.get()) % 360
+        self.Oz = int(self.cscale_z.get()) % 360
+
+        self.Sx = int(self.cshift_x.get())
+        self.Sy = int(self.cshift_y.get())
+        self.Sz = int(self.cshift_z.get())
+
         camera_dist = float(self.dist_z.get())
         camera_point = P(0, 0, camera_dist)
         self.figure = Tetrahedron(camera_point)

@@ -1,8 +1,10 @@
 import math as m
 import numpy as np
 
+
 #   Константы
 EPS = 0.000001
+
 
 # Класс точка
 class P(object):
@@ -158,7 +160,8 @@ class N_edge(object):
     # tp = 0 (ортографическое), 1 (изометрическое), 2 (перспективное)
     # key = 0 (на yz), 1 (на xz), 2 (на xy) ДЛЯ ОРТОГРАФИЧЕСКИХ
     def projection(self, tp=0, key=0):
-
+        print(self.norm)
+        k = 1000 #self.norm
         orth = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
 
         iso = [[m.sqrt(0.5), 0, -m.sqrt(0.5), 0],
@@ -166,7 +169,7 @@ class N_edge(object):
                [1 / m.sqrt(3), -1 / m.sqrt(3), 1 / m.sqrt(3), 0],
                [0, 0, 0, 1]]
 
-        per =  [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
+        per =  [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, -1/k], [0, 0, 0, 1]]
         newpoints = []
 
         mulmatr = []
@@ -179,7 +182,21 @@ class N_edge(object):
             self.rotation(15, 2)
         elif tp == 2:
             mulmatr = per
-        
+
+        newcenter = c = self._center
+        for p in self._points:
+            if np.abs(p.z - k) < 0.0001:
+                k += 1
+            newp = np.matmul([p.x, p.y, p.z, 1], mulmatr)
+            if tp == 2:
+                newpoints.append(P(newp[0] / newp[3], newp[1] / newp[3], newp[3]))
+            elif tp == 0 or tp == 1:
+                newpoints.append(P(newp[0], newp[1], newp[2]))
+        newc = np.matmul([c.x, c.y, c.z, 1], mulmatr)
+        if tp == 2:
+            newcenter = P(newc[0] / newc[3], newc[1] / newc[3], newc[3])
+
+
         norms = list(range(len(self.faces)))
         l = 0
         for face in self.faces:
@@ -188,20 +205,15 @@ class N_edge(object):
                 p1i, p2i, p3i = face
             if len(face) == 4:
                 p1i, p2i, p3i, _ = face
-            norm = vector_prod(self._points[p2i] - self._points[p1i], self._points[p3i] - self._points[p1i])
-            sg = np.sign(scalar_prod(norm, self._points[p1i] - self._center))
+            norm = vector_prod(newpoints[p2i] - newpoints[p1i], newpoints[p3i] - newpoints[p1i])
+            sg = np.sign(scalar_prod(norm, newpoints[p1i] - newcenter))
             norms[l] = norm * P(sg, sg, sg)
             l += 1
         #self.normals = norms
         good_faces = []
         for zi in range(len(self.faces)):
-            if scalar_prod(norms[zi], self.view_vector) < 0:
+            if scalar_prod(norms[zi], self.view_vector) > 0:
                 good_faces.append(self.faces[zi])
-        newedges = []
-        
-        for p in self._points:
-            newp = np.matmul(mulmatr, [p.x, p.y, p.z, 1])
-            newpoints.append(P(newp[0], newp[1], newp[2]))
 
         return newpoints, self._edges, good_faces
 
@@ -344,7 +356,7 @@ class Tetrahedron(N_edge):
         self._psize = 4
         self._esize = 6
         self = self.scaleC(scale, scale, scale)
-        self.norm = dist(self._center, camera_point)
+        self.norm = dist(self._points[0], self._points[1])
 
 # Класс гексаэдр (куб)
 class Hexahedron(N_edge):

@@ -3,10 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="d6c2845e-f42d-42ae-96c3-682d674673d8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/ComputerGraphics.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ComputerGraphics.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lab6-8/interface.py" beforeDir="false" afterPath="$PROJECT_DIR$/Lab6-8/interface.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Lab6-8/poly3d.py" beforeDir="false" afterPath="$PROJECT_DIR$/Lab6-8/poly3d.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lab_6/interface.py" beforeDir="false" afterPath="$PROJECT_DIR$/Lab_6/interface.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lab_6/poly3d.py" beforeDir="false" afterPath="$PROJECT_DIR$/Lab_6/poly3d.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,8 +31,9 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$USER_HOME$/anaconda3/bin" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Lab6-8" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
@@ -40,8 +41,8 @@
   <component name="PyDebuggerOptionsProvider">
     <option name="mySaveCallSignatures" value="true" />
   </component>
-  <component name="RunManager" selected="Python.task1a">
-    <configuration name="alex" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.alex">
+    <configuration name="alex" type="PythonConfigurationType" factoryName="Python">
       <module name="ComputerGraphics" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -49,12 +50,34 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Lab 4" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Lab6-8" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Lab 4/alex.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Lab6-8/interface.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="interface" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="ComputerGraphics" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Lab6-8/xuy" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Lab6-8/xuy/interface.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -151,10 +174,18 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Python.alex" />
+      <item itemvalue="Python.lab4" />
+      <item itemvalue="Python.task1a" />
+      <item itemvalue="Python.task2" />
+      <item itemvalue="Python.task2 (1)" />
+      <item itemvalue="Python.interface" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.interface" />
         <item itemvalue="Python.task1a" />
-        <item itemvalue="Python.alex" />
         <item itemvalue="Python.lab4" />
         <item itemvalue="Python.task2" />
         <item itemvalue="Python.task2 (1)" />
@@ -187,11 +218,12 @@
       <workItem from="1570741657307" duration="863000" />
       <workItem from="1571045479653" duration="639000" />
       <workItem from="1571206813010" duration="71000" />
+      <workItem from="1577262404841" duration="322000" />
+      <workItem from="1577262814702" duration="290000" />
+      <workItem from="1577263123850" duration="1167000" />
+      <workItem from="1577266420045" duration="2999000" />
     </task>
     <servers />
-  </component>
-  <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7113000" />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -210,42 +242,55 @@
     </option>
   </component>
   <component name="WindowStateProjectService">
-    <state x="503" y="106" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1577041304856">
-      <screen x="0" y="0" width="1920" height="1052" />
+    <state x="503" y="104" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1577263153043">
+      <screen x="0" y="0" width="1920" height="1035" />
     </state>
+    <state x="503" y="104" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1035@0.0.1920.1035" timestamp="1577263153043" />
     <state x="503" y="106" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1052@0.0.1920.1052" timestamp="1577041304856" />
     <state x="697" y="287" width="515" height="479" key="EnvironmentVariablesDialog" timestamp="1577041299784">
       <screen x="0" y="0" width="1920" height="1052" />
     </state>
     <state x="697" y="287" width="515" height="479" key="EnvironmentVariablesDialog/0.0.1920.1052@0.0.1920.1052" timestamp="1577041299784" />
-    <state x="732" y="284" width="424" height="485" key="FileChooserDialogImpl" timestamp="1577041396011">
-      <screen x="0" y="0" width="1920" height="1052" />
+    <state x="1266" y="301" width="530" height="597" key="FileChooserDialogImpl" timestamp="1577269418563">
+      <screen x="0" y="0" width="1920" height="1035" />
     </state>
+    <state x="1266" y="301" width="530" height="597" key="FileChooserDialogImpl/0.0.1920.1035@0.0.1920.1035" timestamp="1577269418563" />
     <state x="732" y="284" width="424" height="485" key="FileChooserDialogImpl/0.0.1920.1052@0.0.1920.1052" timestamp="1577041396011" />
-    <state width="1377" height="128" key="GridCell.Tab.0.bottom" timestamp="1577041414407">
-      <screen x="0" y="0" width="1920" height="1052" />
+    <state width="1866" height="260" key="GridCell.Tab.0.bottom" timestamp="1577269419698">
+      <screen x="0" y="0" width="1920" height="1035" />
     </state>
+    <state width="1866" height="260" key="GridCell.Tab.0.bottom/0.0.1920.1035@0.0.1920.1035" timestamp="1577269419698" />
     <state width="1377" height="128" key="GridCell.Tab.0.bottom/0.0.1920.1052@0.0.1920.1052" timestamp="1577041414407" />
-    <state width="1377" height="128" key="GridCell.Tab.0.center" timestamp="1577041414407">
-      <screen x="0" y="0" width="1920" height="1052" />
+    <state width="1866" height="260" key="GridCell.Tab.0.center" timestamp="1577269419696">
+      <screen x="0" y="0" width="1920" height="1035" />
     </state>
+    <state width="1866" height="260" key="GridCell.Tab.0.center/0.0.1920.1035@0.0.1920.1035" timestamp="1577269419696" />
     <state width="1377" height="128" key="GridCell.Tab.0.center/0.0.1920.1052@0.0.1920.1052" timestamp="1577041414407" />
-    <state width="1377" height="128" key="GridCell.Tab.0.left" timestamp="1577041414406">
-      <screen x="0" y="0" width="1920" height="1052" />
+    <state width="1866" height="260" key="GridCell.Tab.0.left" timestamp="1577269419695">
+      <screen x="0" y="0" width="1920" height="1035" />
     </state>
+    <state width="1866" height="260" key="GridCell.Tab.0.left/0.0.1920.1035@0.0.1920.1035" timestamp="1577269419695" />
     <state width="1377" height="128" key="GridCell.Tab.0.left/0.0.1920.1052@0.0.1920.1052" timestamp="1577041414406" />
-    <state width="1377" height="128" key="GridCell.Tab.0.right" timestamp="1577041414407">
-      <screen x="0" y="0" width="1920" height="1052" />
+    <state width="1866" height="260" key="GridCell.Tab.0.right" timestamp="1577269419697">
+      <screen x="0" y="0" width="1920" height="1035" />
     </state>
+    <state width="1866" height="260" key="GridCell.Tab.0.right/0.0.1920.1035@0.0.1920.1035" timestamp="1577269419697" />
     <state width="1377" height="128" key="GridCell.Tab.0.right/0.0.1920.1052@0.0.1920.1052" timestamp="1577041414407" />
-    <state x="464" y="161" width="992" height="731" key="SettingsEditor" timestamp="1577041402792">
-      <screen x="0" y="0" width="1920" height="1052" />
+    <state x="464" y="131" width="1125" height="904" key="SettingsEditor" timestamp="1577263052526">
+      <screen x="0" y="0" width="1920" height="1035" />
     </state>
+    <state x="464" y="131" width="1125" height="904" key="SettingsEditor/0.0.1920.1035@0.0.1920.1035" timestamp="1577263052526" />
     <state x="464" y="161" width="992" height="731" key="SettingsEditor/0.0.1920.1052@0.0.1920.1052" timestamp="1577041402792" />
-    <state x="653" y="353" key="com.intellij.ide.util.TipDialog" timestamp="1577041233626">
-      <screen x="0" y="0" width="1920" height="1052" />
+    <state x="653" y="347" key="com.intellij.ide.util.TipDialog" timestamp="1577266463557">
+      <screen x="0" y="0" width="1920" height="1035" />
     </state>
+    <state x="653" y="347" key="com.intellij.ide.util.TipDialog/0.0.1920.1035@0.0.1920.1035" timestamp="1577266463557" />
     <state x="653" y="353" key="com.intellij.ide.util.TipDialog/0.0.1920.1052@0.0.1920.1052" timestamp="1577041233626" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/ComputerGraphics$interface.coverage" NAME="interface Coverage Results" MODIFIED="1577266655081" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Lab6-8/xuy" />
+    <SUITE FILE_PATH="coverage/ComputerGraphics$task1a.coverage" NAME="task1a Coverage Results" MODIFIED="1577262591247" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Lab 3" />
+    <SUITE FILE_PATH="coverage/ComputerGraphics$alex.coverage" NAME="alex Coverage Results" MODIFIED="1577269141607" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Lab6-8" />
   </component>
   <component name="masterDetails">
     <states>
