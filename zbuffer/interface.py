@@ -3,7 +3,7 @@ from poly3d import *
 from tkinter import *
 from tkinter import ttk
 import numpy as np
-
+#from PIL import Image, ImageTk, ImageDraw
 
 def interpolate(i0, d0, i1, d1):
     if i0 == i1:
@@ -378,44 +378,54 @@ class Gui:
         height = self.CANVAS_HEIGHT / 2
         width = self.CANVAS_HEIGHT / 2
         # Сортировка точек так, что y0 <= y1 <= y2
+        y0, y1, y2 = P0[1], P1[1], P2[1]
+        if P2[1] < P0[1]:
+            P1, P0 = P0, P1
+        if P2[1] < P0[1]:
+            P2, P0 = P0, P2
+        if P2[1] < P2[1]:
+            P2, P1 = P1, P2
+
         x0, x1, x2 = P0[0], P1[0], P2[0]
         y0, y1, y2 = P0[1], P1[1], P2[1]
         z0, z1, z2 = P0[2], P1[2], P2[2]
-        if y1 < y0:
-            P1, P0 = P0, P1
-        if y2 < y0:
-            P2, P0 = P0, P2
-        if y2 < y1:
-            P2, P1 = P1, P2
-
+        print('y0: ', P0[0], P0[1], P0[2])
+        print('y1: ', P1[0], P1[1], P1[2])
+        print('y2: ', P2[0], P2[1], P2[2])
         # Вычисление координат x и значений h для рёбер треугольника
         x01 = interpolate(y0, x0, y1, x1)
         z01 = interpolate(y0, z0, y1, z1)
-
+        print(y1, x1, y2, x2)
         x12 = interpolate(y1, x1, y2, x2)
         z12 = interpolate(y1, z1, y2, z2)
 
         x02 = interpolate(y0, x0, y2, x2)
         z02 = interpolate(y0, z0, y2, z2)
 
+        print('01 len: ', len(x01))
+        print('12 len: ', len(x12))
+        print('02 len: ', len(x02))
+
+
+
         # Конкатенация коротких сторон
         x01 = x01[:-1]
         x012 = x01 + x12
-
+        print('012 len: ', len(x012))
         z01 = z01[:-1]
         z012 = z01 + z12
 
         # Определяем, какая из сторон левая и правая
         print(len(x02))
         print(len(x012))
-        m = len(x012) // 2
+        m = len(x02) // 2
 
         x_left = 0
         x_right = 0
         z_left = 0
         z_right = 0
 
-        if x02[1] < x012[1]:
+        if x02[m] < x012[m]:
             x_left = x02
             x_right = x012
             z_left = z02
@@ -435,27 +445,42 @@ class Gui:
 
             h_segment = interpolate(x_l, z_left[y - y0], x_r, z_right[y - y0])
             for x in range(x_l, x_r + 1):
-                shaded_color = hex(int(255 * h_segment[x - x_l] / 100))[2:].zfill(2)
+                shaded_color = 'aa'#hex(int(255 * h_segment[x - x_l] + 100 / 1000))[2:].zfill(2)
                 #print(h_segment[x - x_l])
                 self.canvas.create_oval(width + x, height - y, width + x + 1, height - y + 1, outline="#"+shaded_color+"0000")
+
 
     def plot_figure(self):
         """
         Отрисовка изменённой фигуры
         """
+        self.clear_window()
         height = self.CANVAS_HEIGHT / 2
         width = self.CANVAS_HEIGHT / 2
         a = 0
         b = 100
         #print(interpolate(0, 0, 0, 100))
-        ys = interpolate(a, 0, b, 200)
+        ys = interpolate(a, 0, b - 100, 200)
         i = 0
         #for x in range(a, b + 1):
-        #    self.canvas.create_oval(width + x, height - ys[i], width + x, height - ys[i])
-        #    i += 1
-        self.draw_shaded_triangle((0, 0, 100), (300,0, 0), (-100, 300, 50))
+            #self.canvas.create_oval(width + x, height - ys[i], width + x, height - ys[i])
+            #i += 1
+        #self.draw_shaded_triangle((47, 0, -16), (-23, 40, -16), (-23, -40, -16))#(0, 0, 100), (100,0, 100), (0, 100, 0))
+        #print(P(1,1,1).to_tuple()[0])
+        #'''
+        for face in self.figure.faces:
+            p1 = self.figure._points[face[0]].to_tuple()
+            p2 = self.figure._points[face[1]].to_tuple()
+            p3 = self.figure._points[face[2]].to_tuple()
+            print(p1, p2, p3)
+            self.draw_shaded_triangle(p1, p2, p3)
+            break
+            if len(face) == 4:
+                p4 = self.figure._points[face[3]].to_tuple()
+                self.draw_shaded_triangle(p2, p3, p4)
+                #'''
         '''
-        self.clear_window()
+        
         
         self.figure.shift(-self.Sx, -self.Sy, -self.Sz)
         self.figure.rotationL(P(0, 0, 0), P(1, 0, 0), -self.Ox)
