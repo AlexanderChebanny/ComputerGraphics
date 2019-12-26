@@ -5,6 +5,7 @@ from tkinter import ttk
 import numpy as np
 from PIL import Image, ImageTk, ImageDraw
 
+
 def interpolate(i0, d0, i1, d1):
     if i0 == i1:
         return [d0]
@@ -34,7 +35,10 @@ class Gui:
         self.canvas.grid(row=0, column=0)
         # mouse clicks
         self.canvas.bind("<ButtonRelease-1>", self.left_button_release)
-        
+
+        self.image = Image.new('RGB', (self.CANVAS_WIDTH, self.CANVAS_HEIGHT), 'white')
+        self.draw = ImageDraw.Draw(self.image)
+
         # clear button
         self.clear_button = ttk.Button(self.window, text='Clear', command=self.clear_window)
         self.clear_button.grid(row=15, column=2)
@@ -328,7 +332,7 @@ class Gui:
             key = 1
         elif self.what_xyz_reflection.get() == 'yz':
             key = 2
-        print(key)
+        # print(key)
         self.figure.reflection(key=key)
         self.plot_figure()
 
@@ -339,12 +343,12 @@ class Gui:
         # scale = float(self.scale_input.get())
         # self.figure.scaleC(xscale=scale, yscale=scale, zscale=scale)
         # self.plot_figure()
-        #print('center', self.figure._center)
-        #print('c1', self.figure._points[0])
+        # print('center', self.figure._center)
+        # print('c1', self.figure._points[0])
         self.figure = self.figure.scaleC(xscale=float(self.scale_x.get()),
                                          yscale=float(self.scale_y.get()),
                                          zscale=float(self.scale_z.get()))
-        #print('c2', self.figure._points[0])
+        # print('c2', self.figure._points[0])
         self.plot_figure()
 
     def shift_action(self):
@@ -414,9 +418,9 @@ class Gui:
 
         x02 = interpolate(y0, x0, y2, x2)
         z02 = interpolate(y0, z0, y2, z2)
-        print(C)
+        # print(C)
         c0, c1, c2 = [max(0.05, ((c + 1) / 2) ** 0.9) for c in C]
-        print('colors: ', c0, c1, c2)
+        # print('colors: ', c0, c1, c2)
         c01 = interpolate(y0, c0 * 100, y1, c1 * 100)
         c12 = interpolate(y1, c1 * 100, y2, c2 * 100)
         c02 = interpolate(y0, c0 * 100, y2, c2 * 100)
@@ -457,7 +461,7 @@ class Gui:
             if x_l > x_r:
                 continue
             z_segment = interpolate(x_l, z_left[y - y0], x_r, z_right[y - y0])
-            print(z_segment)
+            # print(z_segment)
             c_segment = interpolate(x_l, c_left[y - y0], x_r, c_right[y - y0])
             for x in range(x_l, x_r + 1):
                 shaded_color = 'aa'#hex(int(255 * h_segment[x - x_l] + 100 / 1000))[2:].zfill(2)
@@ -468,13 +472,23 @@ class Gui:
                 if z < self.buffer[width + x][height - y]:
                     self.buffer[width + x][height - y] = z
 
+    def erase(self):
+        self.canvas.delete("all")
+        self.draw = ImageDraw.Draw(self.image)
+
+        self.buffer = np.full((self.CANVAS_WIDTH, self.CANVAS_HEIGHT), np.inf)
+
+        self.canvas.image = ImageTk.PhotoImage(self.image)
+        self.canvas.create_image(0, 0, image=self.canvas.image, anchor='nw')
+
     def plot_figure(self):
         """
         Отрисовка изменённой фигуры
         """
         self.clear_window()
-        height = self.CANVAS_HEIGHT / 2
-        width = self.CANVAS_HEIGHT / 2
+        self.erase()
+        # height = self.CANVAS_HEIGHT / 2
+        # width = self.CANVAS_HEIGHT / 2
         a = 0
         b = 100
         #print(interpolate(0, 0, 0, 100))
@@ -487,15 +501,14 @@ class Gui:
         #print(P(1,1,1).to_tuple()[0])
         #'''
         pnts, edgs, faces, center = self.figure.projection(tp=self.proection, key=self.xyz)
-        normals = []
-        ls = []
-        intensities = []
-        Is = []
-        # kd - свойство материала воспринимать рассеянное освещение,
-        # id - мощность рассеянного освещения
-        kd = 1
-        Id = 1
-
+        # normals = []
+        # ls = []
+        # intensities = []
+        # Is = []
+        # # kd - свойство материала воспринимать рассеянное освещение,
+        # # id - мощность рассеянного освещения
+        # kd = 1
+        # Id = 1
 
         minz = 100000
         maxz = -100000
@@ -515,7 +528,7 @@ class Gui:
             p1 = normalize_z(pnts[face[0]])
             p2 = normalize_z(pnts[face[1]])
             p3 = normalize_z(pnts[face[2]])
-            print(p1, p2, p3)
+            # print(p1, p2, p3)
 
             self.bufferize(p1.to_tuple(), p2.to_tuple(), p3.to_tuple())
 
@@ -541,16 +554,21 @@ class Gui:
             if len(face) == 4:
                 p4 = normalize_z(pnts[face[3]])
                 self.bufferize(p1.to_tuple(), p3.to_tuple(), p4.to_tuple())
-                #'''
-            # TODO вывести self.buffer на экран
-            #   если == np.inf, то цвет белый
-            #   ecли != np.inf, о лежит в [0, 100] (чем ближе, тем меньше значение)
-            #   если buffer[x][y] = z, то с = 255 - max(0, min(255, z/100 * 255)) color[x][y] = (с, c, c)
 
+        for y in range(self.image.height):
+            for x in range(self.image.width):
+                z = self.buffer[x][y]
+                if z == np.inf:
+                    c = 255
+                else:
+                    c = int(255 - max(0, min(255, z/100 * 255)))
+                color = (c, c, c)
+                self.draw.point([(x, y)], color)
+
+        self.canvas.image = ImageTk.PhotoImage(self.image)
+        self.canvas.create_image(0, 0, image=self.canvas.image, anchor='nw')
 
         '''
-        
-        
         self.figure.shift(-self.Sx, -self.Sy, -self.Sz)
         self.figure.rotationL(P(0, 0, 0), P(1, 0, 0), -self.Ox)
         self.figure.rotationL(P(0, 0, 0), P(0, 1, 0), -self.Oy)
@@ -683,7 +701,7 @@ class Gui:
             self.figure = Dodecahedron(camera_point)
         elif self.what_figure.get() == "Функция":
                 self.figure = Func(camera_point=camera_point, f=lambda x, y: np.sin((x + y) * 3), x0=0, x1=5, y0=0, y1=5, step=0.2)
-                print(self.figure._points)
+                # print(self.figure._points)
                 # np.sin((x + y) * 3)
                 # (x + y)
         elif self.what_figure.get() == "Фигура вращения":
@@ -707,7 +725,7 @@ class Gui:
 
         self.proection = tp
         self.xyz = key
-        #self.figure.setcenter(250, 250, 0)  # .rotationXYZ(20, 60, 60)
+        #   self.figure.setcenter(250, 250, 0)  # .rotationXYZ(20, 60, 60)
         self.plot_figure()
 
 

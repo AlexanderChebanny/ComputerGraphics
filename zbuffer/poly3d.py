@@ -157,13 +157,12 @@ class N_edge(object):
         else:
             self._worldcoor = True
         return self
-    
         
     # Проецирование фигуры тремя способами
     # tp = 0 (ортографическое), 1 (изометрическое), 2 (перспективное)
     # key = 0 (на yz), 1 (на xz), 2 (на xy) ДЛЯ ОРТОГРАФИЧЕСКИХ
     def projection(self, tp=0, key=0):
-        print(self.norm)
+        # print(self.norm)
         k = 1000 #self.norm
         orth = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
 
