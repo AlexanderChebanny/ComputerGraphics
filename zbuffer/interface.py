@@ -3,7 +3,7 @@ from poly3d import *
 from tkinter import *
 from tkinter import ttk
 import numpy as np
-#from PIL import Image, ImageTk, ImageDraw
+from PIL import Image, ImageTk, ImageDraw
 
 def interpolate(i0, d0, i1, d1):
     if i0 == i1:
@@ -18,8 +18,8 @@ def interpolate(i0, d0, i1, d1):
 
 
 class Gui:
-    CANVAS_WIDTH = 750
-    CANVAS_HEIGHT = 750
+    CANVAS_WIDTH = 500
+    CANVAS_HEIGHT = 500
     
     def __init__(self):
         self.window = Tk()

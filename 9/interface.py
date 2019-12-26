@@ -1,9 +1,8 @@
 from poly3d import *
-#from lib import *
 from tkinter import *
 from tkinter import ttk
 import numpy as np
-#from PIL import Image, ImageTk, ImageDraw
+
 
 def interpolate(i0, d0, i1, d1):
     if i0 == i1:
@@ -12,14 +11,14 @@ def interpolate(i0, d0, i1, d1):
     a = (d1 - d0) / (i1 - i0)
     d = d0
     for i in range(i0, i1 + 1):
-        values.append(d + 0.5)
+        values.append(d)
         d = d + a
     return values
 
 
 class Gui:
-    CANVAS_WIDTH = 750
-    CANVAS_HEIGHT = 750
+    CANVAS_WIDTH = 500
+    CANVAS_HEIGHT = 500
     
     def __init__(self):
         self.window = Tk()
@@ -423,13 +422,12 @@ class Gui:
         # Конкатенация коротких сторон
         x01 = x01[:-1]
         x012 = x01 + x12
-        #print('012 len: ', len(x012))
         z01 = z01[:-1]
         z012 = z01 + z12
 
         c01 = c01[:-1]
         c012 = c01 + c12
-        #print('c012', c012)
+
         # Определяем, какая из сторон левая и правая
         m = len(x02) // 2
 
@@ -458,28 +456,14 @@ class Gui:
                 continue
             h_segment = interpolate(x_l, z_left[y - y0], x_r, z_right[y - y0])
             c_segment = interpolate(x_l, c_left[y - y0], x_r, c_right[y - y0])
-            #print('left:', c_left[y - y0])
-            #print('right:', c_right[y - y0])
-            #print(c_segment)
             for x in range(x_l, x_r + 1):
-                shaded_color = 'aa'#hex(int(255 * h_segment[x - x_l] + 100 / 1000))[2:].zfill(2)
                 z = h_segment[x - x_l]
                 c = c_segment[x - x_l] / 100
-                #xx = x + width / 2
-                #yy = -y + height / 2
-                #if xx < 0 or xx > width or yy < 0 or yy > height or (xx * height + yy) < 0 or (xx * height + yy) > (width * height - 1):
-                #    continue;
-
-                #c = min(1, max(0, c))
-                #print(c)
                 r, g, b = [x * c for x in fcolor]
                 r = hex(int(r))[2:].zfill(2)
                 g = hex(int(g))[2:].zfill(2)
                 b = hex(int(b))[2:].zfill(2)
                 self.canvas.create_oval(width + x, height - y, width + x + 1, height - y - 1, outline="#"+r+g+b)
-                #if z > buff[xx * height + yy]:
-                    #[xx * height + yy] = (int)(z + 0.5)
-                    #colors[xx * height + yy] = c
 
     def plot_figure(self):
         """
@@ -488,18 +472,10 @@ class Gui:
         self.clear_window()
         height = self.CANVAS_HEIGHT / 2
         width = self.CANVAS_HEIGHT / 2
-        a = 0
-        b = 100
-        #print(interpolate(0, 0, 0, 100))
-        ys = interpolate(a, 0, b - 100, 200)
-        i = 0
-        #for x in range(a, b + 1):
-            #self.canvas.create_oval(width + x, height - ys[i], width + x, height - ys[i])
-            #i += 1
-        #self.draw_shaded_triangle((47, 0, -16), (-23, 40, -16), (-23, -40, -16))#(0, 0, 100), (100,0, 100), (0, 100, 0))
-        #print(P(1,1,1).to_tuple()[0])
-        #'''
-        light = P(0, 300, 0)
+        light = P(0, 200, 0)
+        light_radius = 17
+        self.canvas.create_oval(width + light.x - light_radius, height - light.y + light_radius,
+                                width + light.x + light_radius, height - light.y - light_radius, fill='yellow', outline='yellow')
         pnts, edgs, faces, center = self.figure.projection(tp=self.proection, key=self.xyz)
         normals = []
         ls = []
@@ -515,11 +491,9 @@ class Gui:
             l = light - p
             ls.append(l * P(300, 300, 300))
             I = kd * Id * scalar_prod(l, normal) / np.sqrt(scalar_prod(l, l)) / np.sqrt(scalar_prod(normal, normal))
-            #print('p: ', p, '; I: ', I)
             intensities.append(I)
 
-        print('max:', max(intensities))
-        print('min:', min(intensities))
+        ############################################drawing
         for face in faces:
             p1 = pnts[face[0]]
             p2 = pnts[face[1]]
@@ -528,9 +502,11 @@ class Gui:
             print(p1, p2, p3)
             print(itys)
             self.draw_shaded_triangle(p1.to_tuple(), p2.to_tuple(), p3.to_tuple(), itys, (255, 100, 150))
+            '''
             self.canvas.create_line(width + p1.x, height - p1.y, width + p2.x, height - p2.y)
             self.canvas.create_line(width + p2.x, height - p2.y, width + p3.x, height - p3.y)
             self.canvas.create_line(width + p3.x, height - p3.y, width + p1.x, height - p1.y)
+            
             p1n = p1 + normals[face[0]]
             p2n = p2 + normals[face[1]]
             p3n = p3 + normals[face[2]]
@@ -544,14 +520,14 @@ class Gui:
             self.canvas.create_line(width + p1.x, height - p1.y, width + p1l.x, height - p1l.y, fill='#33aaff')
             self.canvas.create_line(width + p2.x, height - p2.y, width + p2l.x, height - p2l.y, fill='#33aaff')
             self.canvas.create_line(width + p3.x, height - p3.y, width + p3l.x, height - p3l.y, fill='#33aaff')
+            #'''
             #break
             if len(face) == 4:
                 p4 = pnts[face[3]]
-                self.draw_shaded_triangle(p1.to_tuple(), p3.to_tuple(), p4.to_tuple())
-                #'''
+                itys = [intensities[face[0]], intensities[face[2]], intensities[face[3]]]
+                self.draw_shaded_triangle(p1.to_tuple(), p3.to_tuple(), p4.to_tuple(), itys, (255, 100, 150))
+
         '''
-        
-        
         self.figure.shift(-self.Sx, -self.Sy, -self.Sz)
         self.figure.rotationL(P(0, 0, 0), P(1, 0, 0), -self.Ox)
         self.figure.rotationL(P(0, 0, 0), P(0, 1, 0), -self.Oy)
