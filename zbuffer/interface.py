@@ -19,7 +19,7 @@ def interpolate(i0, d0, i1, d1):
 
 class Gui:
     CANVAS_WIDTH = 500
-    CANVAS_HEIGHT = 500
+    CANVAS_HEIGHT = CANVAS_WIDTH
     
     def __init__(self):
         self.window = Tk()
@@ -38,7 +38,7 @@ class Gui:
         # clear button
         self.clear_button = ttk.Button(self.window, text='Clear', command=self.clear_window)
         self.clear_button.grid(row=15, column=2)
-
+        self.buffer = np.full((self.CANVAS_WIDTH, self.CANVAS_HEIGHT), np.inf)
         self.OPTIONS_figure = [
             "",
             "Тетраэдр",
@@ -374,9 +374,9 @@ class Gui:
 
         self.plot_figure()
 
-    def draw_shaded_triangle(self, P0:(int, int, int), P1:(int, int, int), P2:(int, int, int), C = [1, 1, 1], fcolor = (255, 50, 150)):
-        height = self.CANVAS_HEIGHT / 2
-        width = self.CANVAS_HEIGHT / 2
+    def bufferize(self, P0:(int, int, int), P1:(int, int, int), P2:(int, int, int), C = [1, 1, 1], fcolor = (255, 50, 150)):
+        height = self.CANVAS_HEIGHT // 2
+        width = self.CANVAS_HEIGHT // 2
         # Сортировка точек так, что y0 <= y1 <= y2
         y0, y1, y2 = P0[1], P1[1], P2[1]
 
@@ -456,30 +456,17 @@ class Gui:
             x_r = int(x_right[y - y0])
             if x_l > x_r:
                 continue
-            h_segment = interpolate(x_l, z_left[y - y0], x_r, z_right[y - y0])
+            z_segment = interpolate(x_l, z_left[y - y0], x_r, z_right[y - y0])
+            print(z_segment)
             c_segment = interpolate(x_l, c_left[y - y0], x_r, c_right[y - y0])
-            #print('left:', c_left[y - y0])
-            #print('right:', c_right[y - y0])
-            #print(c_segment)
             for x in range(x_l, x_r + 1):
                 shaded_color = 'aa'#hex(int(255 * h_segment[x - x_l] + 100 / 1000))[2:].zfill(2)
-                z = h_segment[x - x_l]
-                c = c_segment[x - x_l] / 100
-                #xx = x + width / 2
-                #yy = -y + height / 2
-                #if xx < 0 or xx > width or yy < 0 or yy > height or (xx * height + yy) < 0 or (xx * height + yy) > (width * height - 1):
-                #    continue;
-
-                #c = min(1, max(0, c))
-                #print(c)
-                r, g, b = [x * c for x in fcolor]
-                r = hex(int(r))[2:].zfill(2)
-                g = hex(int(g))[2:].zfill(2)
-                b = hex(int(b))[2:].zfill(2)
-                self.canvas.create_oval(width + x, height - y, width + x + 1, height - y - 1, outline="#"+r+g+b)
-                #if z > buff[xx * height + yy]:
-                    #[xx * height + yy] = (int)(z + 0.5)
-                    #colors[xx * height + yy] = c
+                z = z_segment[x - x_l]# / 100 * 255
+                #z = 255 - min(255, max(0, z))
+                #z = hex(int(z))[2:].zfill(2)
+                #self.canvas.create_oval(width + x, height - y, width + x + 1, height - y - 1, outline="#"+z+z+z)
+                if z < self.buffer[width + x][height - y]:
+                    self.buffer[width + x][height - y] = z
 
     def plot_figure(self):
         """
@@ -499,7 +486,6 @@ class Gui:
         #self.draw_shaded_triangle((47, 0, -16), (-23, 40, -16), (-23, -40, -16))#(0, 0, 100), (100,0, 100), (0, 100, 0))
         #print(P(1,1,1).to_tuple()[0])
         #'''
-        light = P(0, 300, 0)
         pnts, edgs, faces, center = self.figure.projection(tp=self.proection, key=self.xyz)
         normals = []
         ls = []
@@ -509,25 +495,31 @@ class Gui:
         # id - мощность рассеянного освещения
         kd = 1
         Id = 1
-        for p in pnts:
-            normal = p - center
-            normals.append(normal * P(50, 50, 50))
-            l = light - p
-            ls.append(l * P(300, 300, 300))
-            I = kd * Id * scalar_prod(l, normal) / np.sqrt(scalar_prod(l, l)) / np.sqrt(scalar_prod(normal, normal))
-            #print('p: ', p, '; I: ', I)
-            intensities.append(I)
 
-        print('max:', max(intensities))
-        print('min:', min(intensities))
+
+        minz = 100000
+        maxz = -100000
+        for p in pnts:
+            if p.z < minz:
+                minz = p.z
+            if p.z > maxz:
+                maxz = p.z
+
+        def normalize_z(p):
+            x, y, z = p.x, p.y, p.z
+            z -= minz
+            z = z / (maxz - minz) * 100
+            return P(x, y, z)
+
         for face in faces:
-            p1 = pnts[face[0]]
-            p2 = pnts[face[1]]
-            p3 = pnts[face[2]]
-            itys = [intensities[face[i]] for i in range(3)]
+            p1 = normalize_z(pnts[face[0]])
+            p2 = normalize_z(pnts[face[1]])
+            p3 = normalize_z(pnts[face[2]])
             print(p1, p2, p3)
-            print(itys)
-            self.draw_shaded_triangle(p1.to_tuple(), p2.to_tuple(), p3.to_tuple(), itys, (255, 100, 150))
+
+            self.bufferize(p1.to_tuple(), p2.to_tuple(), p3.to_tuple())
+
+            '''
             self.canvas.create_line(width + p1.x, height - p1.y, width + p2.x, height - p2.y)
             self.canvas.create_line(width + p2.x, height - p2.y, width + p3.x, height - p3.y)
             self.canvas.create_line(width + p3.x, height - p3.y, width + p1.x, height - p1.y)
@@ -544,11 +536,18 @@ class Gui:
             self.canvas.create_line(width + p1.x, height - p1.y, width + p1l.x, height - p1l.y, fill='#33aaff')
             self.canvas.create_line(width + p2.x, height - p2.y, width + p2l.x, height - p2l.y, fill='#33aaff')
             self.canvas.create_line(width + p3.x, height - p3.y, width + p3l.x, height - p3l.y, fill='#33aaff')
+            '''
             #break
             if len(face) == 4:
-                p4 = pnts[face[3]]
-                self.draw_shaded_triangle(p1.to_tuple(), p3.to_tuple(), p4.to_tuple())
+                p4 = normalize_z(pnts[face[3]])
+                self.bufferize(p1.to_tuple(), p3.to_tuple(), p4.to_tuple())
                 #'''
+            # TODO вывести self.buffer на экран
+            #   если == np.inf, то цвет белый
+            #   ecли != np.inf, о лежит в [0, 100] (чем ближе, тем меньше значение)
+            #   если buffer[x][y] = z, то с = 255 - max(0, min(255, z/100 * 255)) color[x][y] = (с, c, c)
+
+
         '''
         
         
